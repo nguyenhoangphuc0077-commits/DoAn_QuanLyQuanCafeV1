@@ -1,0 +1,6 @@
+DM01;Cà Phê Truyền Thống
+DM02;Cà Phê Máy & Ý
+DM03;Trà & Trà Trái Cây
+DM04;Đá Xay & Freeze
+DM05;Sinh Tố & Nước Ép
+DM06;Bánh Ngọt & Tráng Miệng

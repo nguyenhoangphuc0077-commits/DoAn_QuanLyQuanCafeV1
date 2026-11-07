@@ -1,0 +1,8 @@
+B01;Bàn 1;Tầng trệt;Trống
+B02;Bàn 2;Tầng trệt;Có khách
+B03;Bàn 3;Tầng trệt;Có khách
+B04;Bàn 4;Tầng lầu;Trống
+B05;Bàn 5;Tầng lầu;Có khách
+B06;Bàn 6;Sân vườn;Trống
+B07;Bàn 7;Sân vườn;Có khách
+B08;Bàn 8;Máy lạnh;Trống

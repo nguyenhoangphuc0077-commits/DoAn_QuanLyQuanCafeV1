@@ -1,0 +1,5 @@
+ORD001;B01;Bàn 1;CF02;Cà phê sữa đá;M;2;2026-11-07 21:30:00;Ít ngọt, nhiều đá;Chờ pha chế
+ORD002;B03;Bàn 3;TR01;Trà đào cam sả;L;1;2026-11-07 21:32:00;Ít đá, để đào riêng;Đang pha chế
+ORD003;B02;Bàn 2;BN01;Bánh Tiramisu phô mai;M;1;2026-11-07 21:35:00;Ăn ngay;Đang pha chế
+ORD004;B05;Bàn 5;DX01;Matcha đá xay kem tuyết;L;2;2026-11-07 21:38:00;Nhiều whipping cream;Chờ pha chế
+ORD005;B07;Bàn 7;CF05;Cà phê muối xứ Huế;M;1;2026-11-07 21:40:00;Nóng;Chờ pha chế
