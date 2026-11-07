@@ -1,25 +1,25 @@
 CF01;Cà phê đen đá;DM01;25000;29000;35000;True;cf_den_da.jpg
 CF02;Cà phê sữa đá;DM01;29000;35000;39000;True;cf_sua_da.jpg
 CF03;Bạc xỉu ba tầng;DM01;32000;38000;42000;True;bac_xiu.jpg
-CF04;Cà phê trứng Hà Nội;DM01;39000;45000;49000;True;cf_trung.jpg
-CF05;Cà phê muối xứ Huế;DM01;32000;38000;42000;True;cf_muoi.jpg
+CF04;Cà phê trứng;DM01;39000;45000;49000;True;cf_trung.jpg
+CF05;Cà phê muối;DM01;32000;38000;42000;True;cf_muoi.jpg
 CF06;Espresso đậm vị;DM02;30000;35000;40000;True;espresso.jpg
-CF07;Americano đá mát lạnh;DM02;35000;40000;45000;True;americano.jpg
-CF08;Cappuccino bọt sữa;DM02;45000;50000;55000;True;cappuccino.jpg
-CF09;Caramel Macchiato;DM02;49000;55000;60000;True;caramel_macchiato.jpg
-CF10;Latte vani thơm béo;DM02;45000;50000;55000;True;latte.jpg
+CF07;Americano đá;DM02;35000;40000;45000;True;americano.jpg
+CF08;Americano nóng;DM02;35000;40000;45000;True;americano_hot.jpg
+CF09;Cappuccino bọt sữa;DM02;45000;50000;55000;True;cappuccino.jpg
+CF10;Caramel Macchiato;DM02;49000;55000;60000;True;caramel_macchiato.jpg
+CF11;Latte vani thơm béo;DM02;45000;50000;55000;True;latte.jpg
 TR01;Trà đào cam sả;DM03;39000;45000;49000;True;tra_dao_cam_sa.jpg
 TR02;Trà vải hoa hồng;DM03;39000;45000;49000;True;tra_vai.jpg
 TR03;Trà sen vàng macchiato;DM03;42000;49000;55000;True;tra_sen_vang.jpg
 TR04;Trà ô long sữa dừa;DM03;38000;45000;50000;True;tra_olong_sua.jpg
-TR05;Trà chanh sả gừng tươi;DM03;30000;35000;40000;True;tra_chanh.jpg
+TR05;Trà chanh;DM03;30000;35000;40000;True;tra_chanh.jpg
 DX01;Matcha đá xay kem tuyết;DM04;45000;52000;58000;True;matcha_ice.jpg
 DX02;Chocolate Cookie Freeze;DM04;45000;55000;62000;True;choco_freeze.jpg
-DX03;Cà phê cốt dừa đá xay;DM04;42000;49000;55000;True;cf_cot_dua.jpg
-ST01;Sinh tố bơ sáp Đắk Lắk;DM05;40000;48000;55000;True;sinh_to_bo.jpg
-ST02;Sinh tố xoài cát Hòa Lộc;DM05;38000;45000;50000;True;sinh_to_xoai.jpg
-ST03;Nước cam vắt nguyên chất;DM05;35000;42000;48000;True;nuoc_ep_cam.jpg
-ST04;Nước ép dưa hấu mát lạnh;DM05;30000;38000;45000;True;nuoc_ep_dua_hau.jpg
+ST01;Sinh tố bơ;DM05;40000;48000;55000;True;sinh_to_bo.jpg
+ST02;Sinh tố xoài;DM05;38000;45000;50000;True;sinh_to_xoai.jpg
+ST03;Nước cam ép;DM05;35000;42000;48000;True;nuoc_ep_cam.jpg
+ST04;Nước ép dưa hấu;DM05;30000;38000;45000;True;nuoc_ep_dua_hau.jpg
 BN01;Bánh Tiramisu phô mai;DM06;39000;39000;39000;True;tiramisu.jpg
 BN02;Bánh Mousse chanh leo;DM06;38000;38000;38000;True;mousse_chanh_leo.jpg
 BN03;Bánh Croissant bơ tỏi;DM06;32000;32000;32000;False;croissant.jpg
