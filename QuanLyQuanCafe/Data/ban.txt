@@ -6,3 +6,4 @@ B05;Bàn 5;Tầng lầu;Có khách
 B06;Bàn 6;Sân vườn;Trống
 B07;Bàn 7;Sân vườn;Có khách
 B08;Bàn 8;Máy lạnh;Trống
+

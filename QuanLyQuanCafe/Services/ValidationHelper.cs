@@ -5,17 +5,8 @@ using System.Windows.Forms;
 
 namespace QuanLyQuanCafe.Services
 {
-    /// <summary>
-    /// Lớp hỗ trợ kiểm tra tính hợp lệ của dữ liệu nhập trên giao diện
-    /// Đảm nhiệm bởi: Nguyễn Hoàng Phúc (Phần chung Giai đoạn 1)
-    /// Đáp ứng yêu cầu: Bắt lỗi không rỗng, đúng kiểu số bằng TryParse, không trùng mã,
-    /// hiển thị thông báo lỗi và tự động đưa con trỏ Focus() về ô bị sai.
-    /// </summary>
     public static class ValidationHelper
     {
-        /// <summary>
-        /// Kiểm tra ô TextBox không được để trống
-        /// </summary>
         public static bool KiemTraRong(TextBox txt, string tenTruong)
         {
             if (string.IsNullOrWhiteSpace(txt.Text))
@@ -29,9 +20,6 @@ namespace QuanLyQuanCafe.Services
             return true;
         }
 
-        /// <summary>
-        /// Kiểm tra ComboBox đã được chọn phần tử hợp lệ hay chưa
-        /// </summary>
         public static bool KiemTraChon(ComboBox cbo, string tenTruong)
         {
             if (cbo.SelectedIndex < 0 || cbo.SelectedItem == null || string.IsNullOrWhiteSpace(cbo.Text))
@@ -44,13 +32,10 @@ namespace QuanLyQuanCafe.Services
             return true;
         }
 
-        /// <summary>
-        /// Kiểm tra ô nhập số tiền / số thực bằng TryParse và giá trị phải >= 0
-        /// </summary>
         public static bool KiemTraSoThucDuong(TextBox txt, string tenTruong, out decimal ketQua, bool choPhepBangKhong = true)
         {
             ketQua = 0;
-            string text = txt.Text.Trim().Replace(",", "").Replace(".", ""); // Chuẩn hóa bỏ dấu chấm phẩy nếu người dùng nhập có format
+            string text = txt.Text.Trim().Replace(",", "").Replace(".", "");
 
             if (!decimal.TryParse(txt.Text.Trim(), out ketQua) && !decimal.TryParse(text, out ketQua))
             {
@@ -74,9 +59,6 @@ namespace QuanLyQuanCafe.Services
             return true;
         }
 
-        /// <summary>
-        /// Kiểm tra mã không được trùng với các mã đã có trong danh sách
-        /// </summary>
         public static bool KiemTraTrungMa(TextBox txt, IEnumerable<string> danhSachMaHienTai, string tenTruong)
         {
             string maNhap = txt.Text.Trim();
@@ -94,10 +76,6 @@ namespace QuanLyQuanCafe.Services
             return true;
         }
 
-        /// <summary>
-        /// Hộp thoại xác nhận hành động nguy hiểm (Xóa, Thoát, Hủy)
-        /// Theo yêu cầu CLO2: Hộp thoại chuẩn MessageBox hỏi xác nhận khi xóa/thoát
-        /// </summary>
         public static bool XacNhan(string thongDiep, string tieuDe = "Xác nhận")
         {
             DialogResult dr = MessageBox.Show(thongDiep, tieuDe, MessageBoxButtons.YesNo, MessageBoxIcon.Question);

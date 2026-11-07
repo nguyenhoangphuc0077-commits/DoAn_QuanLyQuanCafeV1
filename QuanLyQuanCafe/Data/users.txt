@@ -2,3 +2,4 @@ admin;123;QuanTri;Quản Trị Viên
 phuc;123;NhanVien;Nguyễn Hoàng Phúc (SV1 - Thực đơn)
 trung;123;NhanVien;Trần Trí Trung (SV2 - Sơ đồ bàn)
 vu;123;NhanVien;Đỗ Nguyễn Uy Vũ (SV3 - Thanh toán)
+

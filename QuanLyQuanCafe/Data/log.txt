@@ -1,1 +1,2 @@
 [2026-11-07 20:00:00] [THÔNG BÁO/LỖI]: Khởi tạo hệ thống quản lý quán cà phê - Phân hệ Thực đơn (Nguyễn Hoàng Phúc)
+

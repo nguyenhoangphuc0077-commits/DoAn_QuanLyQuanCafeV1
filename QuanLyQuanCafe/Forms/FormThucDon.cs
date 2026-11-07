@@ -26,12 +26,8 @@ namespace QuanLyQuanCafe.Forms
             LamMoiForm();
         }
 
-        /// <summary>
-        /// Nạp các danh mục vào ComboBox chọn và ComboBox lọc
-        /// </summary>
         public void NapDanhSachDanhMucVaoCombobox()
         {
-            // ComboBox chọn danh mục cho món
             cboDanhMuc.Items.Clear();
             foreach (var dm in DataService.Instance.DanhSachDanhMuc)
             {
@@ -40,7 +36,6 @@ namespace QuanLyQuanCafe.Forms
             if (cboDanhMuc.Items.Count > 0)
                 cboDanhMuc.SelectedIndex = 0;
 
-            // ComboBox lọc danh mục
             string currentFilter = cboLocDanhMuc.SelectedItem?.ToString() ?? string.Empty;
             cboLocDanhMuc.Items.Clear();
             cboLocDanhMuc.Items.Add("-- Tất cả danh mục --");
@@ -53,10 +48,6 @@ namespace QuanLyQuanCafe.Forms
             cboLocDanhMuc.SelectedIndex = foundIdx >= 0 ? foundIdx : 0;
         }
 
-        /// <summary>
-        /// Hiển thị danh sách món ăn lên ListView với Details view
-        /// Tô màu và đánh dấu trạng thái món tạm hết
-        /// </summary>
         private void HienThiDanhSachMon()
         {
             lvwThucDon.Items.Clear();
@@ -73,13 +64,11 @@ namespace QuanLyQuanCafe.Forms
             {
                 string tenDM = DataService.Instance.LayTenDanhMuc(m.MaDanhMuc);
 
-                // Lọc theo danh mục
                 if (!string.IsNullOrEmpty(filterDM) && !string.Equals(tenDM, filterDM, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
 
-                // Lọc theo từ khóa tìm kiếm (mã hoặc tên món)
                 if (!string.IsNullOrEmpty(tuKhoa) &&
                     !m.Ma.ToLower().Contains(tuKhoa) &&
                     !m.Ten.ToLower().Contains(tuKhoa))
@@ -104,7 +93,7 @@ namespace QuanLyQuanCafe.Forms
                 {
                     lvi.SubItems.Add("TẠM HẾT");
                     lvi.ForeColor = Color.Crimson;
-                    lvi.BackColor = Color.FromArgb(255, 235, 238); // Highlight màu hồng nhạt
+                    lvi.BackColor = Color.FromArgb(255, 235, 238);
                     soTamHet++;
                 }
 
@@ -114,7 +103,6 @@ namespace QuanLyQuanCafe.Forms
                 lvwThucDon.Items.Add(lvi);
             }
 
-            // Cập nhật thanh trạng thái
             lblTongSoMon.Text = $"Tổng số món: {danhSach.Count} (Hiển thị: {lvwThucDon.Items.Count})";
             lblDangBan.Text = $"| Còn bán: {soDangBan}";
             lblTamHet.Text = $"| Tạm hết: {soTamHet}";
@@ -157,9 +145,8 @@ namespace QuanLyQuanCafe.Forms
                     _isEditing = true;
                     txtMaMon.Text = m.Ma;
                     txtTenMon.Text = m.Ten;
-                    txtMaMon.Enabled = false; // Khóa mã khi sửa
+                    txtMaMon.Enabled = false;
 
-                    // Chọn danh mục tương ứng
                     for (int i = 0; i < cboDanhMuc.Items.Count; i++)
                     {
                         if (cboDanhMuc.Items[i] is DanhMuc dm && string.Equals(dm.MaDM, m.MaDanhMuc, StringComparison.OrdinalIgnoreCase))
@@ -183,9 +170,6 @@ namespace QuanLyQuanCafe.Forms
             }
         }
 
-        /// <summary>
-        /// Hiển thị ảnh món lên PictureBox. Nếu không có file hoặc file bị lỗi thì vẽ ảnh placeholder
-        /// </summary>
         private void HienThiAnhMon(string fileName, string tenMon)
         {
             try
@@ -202,14 +186,12 @@ namespace QuanLyQuanCafe.Forms
                     string fullPath = Path.Combine(FileHelper.ImagesDirectory, fileName);
                     if (File.Exists(fullPath))
                     {
-                        // Dùng FileStream đọc byte để không khóa file ảnh trên đĩa
                         using var fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read);
                         picMonAn.Image = Image.FromStream(fs);
                         return;
                     }
                 }
 
-                // Nếu không có ảnh hoặc file không tồn tại: tạo ảnh placeholder đẹp mắt
                 picMonAn.Image = TaoAnhPlaceholder(tenMon);
             }
             catch (Exception ex)
@@ -318,7 +300,6 @@ namespace QuanLyQuanCafe.Forms
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
-            // 1. Kiểm tra tính hợp lệ dữ liệu nhập qua ValidationHelper (Chương 2)
             if (!ValidationHelper.KiemTraRong(txtMaMon, "Mã món")) return;
             if (!ValidationHelper.KiemTraRong(txtTenMon, "Tên món")) return;
             if (!ValidationHelper.KiemTraChon(cboDanhMuc, "Danh mục")) return;
@@ -334,7 +315,6 @@ namespace QuanLyQuanCafe.Forms
 
             if (!_isEditing)
             {
-                // Kiểm tra trùng mã món
                 var danhSachMa = DataService.Instance.DanhSachMon.Select(m => m.Ma);
                 if (!ValidationHelper.KiemTraTrungMa(txtMaMon, danhSachMa, "Món")) return;
 
@@ -356,7 +336,6 @@ namespace QuanLyQuanCafe.Forms
                 }
             }
 
-            // Lưu dữ liệu vào mon.txt
             DataService.Instance.LuuDanhSachMon();
             HienThiDanhSachMon();
 
@@ -375,7 +354,6 @@ namespace QuanLyQuanCafe.Forms
             var lvi = lvwThucDon.SelectedItems[0];
             if (lvi.Tag is not Mon mon) return;
 
-            // Hộp thoại chuẩn xác nhận trước khi xóa (CLO2 / Chương 4)
             if (ValidationHelper.XacNhan($"Bạn có chắc chắn muốn xóa món '{mon.Ten}' (Mã: {mon.Ma}) khỏi thực đơn?", "Xác nhận xóa món"))
             {
                 DataService.Instance.DanhSachMon.Remove(mon);
@@ -408,9 +386,6 @@ namespace QuanLyQuanCafe.Forms
             HienThiDanhSachMon();
         }
 
-        /// <summary>
-        /// Task T2.4: Xuất thực đơn ra tập tin CSV
-        /// </summary>
         private void btnXuatCsv_Click(object sender, EventArgs e)
         {
             using var sfd = new SaveFileDialog
@@ -438,9 +413,6 @@ namespace QuanLyQuanCafe.Forms
             }
         }
 
-        /// <summary>
-        /// Task T2.4: Nhập thực đơn từ tập tin CSV
-        /// </summary>
         private void btnNhapCsv_Click(object sender, EventArgs e)
         {
             using var ofd = new OpenFileDialog
@@ -455,7 +427,6 @@ namespace QuanLyQuanCafe.Forms
 
                 if (dsMoi.Count > 0)
                 {
-                    // Cập nhật danh sách món (ghi đè hoặc thêm mới theo mã món)
                     int themMoi = 0;
                     int capNhat = 0;
 
@@ -500,9 +471,6 @@ namespace QuanLyQuanCafe.Forms
             }
         }
 
-        /// <summary>
-        /// Mở Màn hình Pha chế (Task T2.5)
-        /// </summary>
         private void btnMoPhaChe_Click(object sender, EventArgs e)
         {
             var frm = new FormPhaChe();

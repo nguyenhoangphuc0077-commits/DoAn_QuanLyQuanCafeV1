@@ -6,9 +6,6 @@ using QuanLyQuanCafe.Models;
 
 namespace QuanLyQuanCafe.Services
 {
-    /// <summary>
-    /// Dịch vụ quản lý dữ liệu trên bộ nhớ bằng List<T> theo yêu cầu không dùng SQL/CSDL
-    /// </summary>
     public class DataService
     {
         private static DataService? _instance;
@@ -29,17 +26,12 @@ namespace QuanLyQuanCafe.Services
             KhoiTaoDuLieu();
         }
 
-        /// <summary>
-        /// Khởi tạo và nạp dữ liệu từ các tập tin .txt
-        /// Tự sinh dữ liệu mẫu nếu các tập tin chưa có hoặc trống
-        /// </summary>
         public void KhoiTaoDuLieu()
         {
             NapDanhSachDanhMuc();
             NapDanhSachMon();
             NapDanhSachDonPhaChe();
 
-            // Nếu chưa có dữ liệu mẫu, tự động tạo để đáp ứng yêu cầu: có sẵn >= 20 dòng mẫu
             if (DanhSachDanhMuc.Count == 0 || DanhSachMon.Count == 0)
             {
                 TaoDuLieuMauNeuChuaCo();
@@ -76,27 +68,17 @@ namespace QuanLyQuanCafe.Services
             return FileHelper.GhiTapTin(FILE_DONPHACHE, DanhSachDonPhaChe, d => d.ToCsvLine());
         }
 
-        /// <summary>
-        /// Tìm tên danh mục từ mã danh mục
-        /// </summary>
         public string LayTenDanhMuc(string maDM)
         {
             var dm = DanhSachDanhMuc.FirstOrDefault(d => string.Equals(d.MaDM, maDM, StringComparison.OrdinalIgnoreCase));
             return dm != null ? dm.TenDM : "Chưa phân loại";
         }
 
-        /// <summary>
-        /// Kiểm tra xem danh mục có đang chứa món ăn nào không
-        /// </summary>
         public bool DanhMucDangCoMon(string maDM)
         {
             return DanhSachMon.Any(m => string.Equals(m.MaDanhMuc, maDM, StringComparison.OrdinalIgnoreCase));
         }
 
-        /// <summary>
-        /// Tự động sinh dữ liệu mẫu phong phú (>= 20 dòng món ăn)
-        /// Đáp ứng tiêu chí chấm điểm bài tập lớn
-        /// </summary>
         public void TaoDuLieuMauNeuChuaCo()
         {
             if (DanhSachDanhMuc.Count == 0)
@@ -158,7 +140,6 @@ namespace QuanLyQuanCafe.Services
                 LuuDanhSachDonPhaChe();
             }
 
-            // Tạo các file phụ thuộc chung cho cả nhóm nếu chưa có
             string userPath = FileHelper.GetFullPath(FILE_USERS);
             if (!File.Exists(userPath))
             {
@@ -187,4 +168,3 @@ namespace QuanLyQuanCafe.Services
         }
     }
 }
-

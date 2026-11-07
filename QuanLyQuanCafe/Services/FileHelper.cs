@@ -5,31 +5,19 @@ using System.Text;
 
 namespace QuanLyQuanCafe.Services
 {
-    /// <summary>
-    /// Class Base xử lý đọc/ghi tập tin văn bản dùng chung cho toàn bộ dự án
-    /// Đảm nhiệm bởi: Nguyễn Hoàng Phúc (Task T1.3)
-    /// Đáp ứng chuẩn: UTF-8, phân tách bằng dấu ';', StreamReader/StreamWriter,
-    /// tự động tạo thư mục/file, try-catch toàn diện, bỏ qua dòng lỗi và ghi log.txt.
-    /// </summary>
     public static class FileHelper
     {
         private static string? _dataDirectory;
 
-        /// <summary>
-        /// Đường dẫn thư mục Data của phần mềm.
-        /// Tự động tìm thư mục Data ở thư mục gốc của ứng dụng hoặc project, và tự tạo nếu chưa có.
-        /// </summary>
         public static string DataDirectory
         {
             get
             {
                 if (string.IsNullOrEmpty(_dataDirectory))
                 {
-                    // Ưu tiên tìm trong AppDomain hoặc thư mục làm việc
                     string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                     string candidate = Path.Combine(baseDir, "Data");
 
-                    // Nếu đang chạy trong bin/Debug/..., kiểm tra xem có thư mục Data ở cấp project không
                     if (!Directory.Exists(candidate))
                     {
                         DirectoryInfo? parent = Directory.GetParent(baseDir);
@@ -57,9 +45,6 @@ namespace QuanLyQuanCafe.Services
             set => _dataDirectory = value;
         }
 
-        /// <summary>
-        /// Đường dẫn thư mục hình ảnh Data/Images
-        /// </summary>
         public static string ImagesDirectory
         {
             get
@@ -73,14 +58,8 @@ namespace QuanLyQuanCafe.Services
             }
         }
 
-        /// <summary>
-        /// Đường dẫn file log.txt
-        /// </summary>
         public static string LogFilePath => Path.Combine(DataDirectory, "log.txt");
 
-        /// <summary>
-        /// Lấy đường dẫn đầy đủ của một file trong thư mục Data
-        /// </summary>
         public static string GetFullPath(string fileName)
         {
             if (Path.IsPathRooted(fileName))
@@ -88,9 +67,6 @@ namespace QuanLyQuanCafe.Services
             return Path.Combine(DataDirectory, fileName);
         }
 
-        /// <summary>
-        /// Ghi nhật ký lỗi vào file log.txt theo chuẩn thời gian [yyyy-MM-dd HH:mm:ss]
-        /// </summary>
         public static void GhiLog(string thongDiep, Exception? ex = null)
         {
             try
@@ -113,15 +89,9 @@ namespace QuanLyQuanCafe.Services
             }
             catch
             {
-                // Tuyệt đối không để việc ghi log làm crash chương trình
             }
         }
 
-        /// <summary>
-        /// Đọc danh sách đối tượng T từ file văn bản (.txt hoặc .csv)
-        /// Dùng StreamReader với Encoding UTF-8.
-        /// Bỏ qua dòng sai định dạng, không làm dừng chương trình và ghi lỗi vào log.txt.
-        /// </summary>
         public static List<T> DocTapTin<T>(string fileName, Func<string, T?> chuyenDoiDong)
         {
             var danhSach = new List<T>();
@@ -129,7 +99,6 @@ namespace QuanLyQuanCafe.Services
 
             try
             {
-                // Tự tạo file nếu chưa tồn tại
                 if (!File.Exists(fullPath))
                 {
                     string dir = Path.GetDirectoryName(fullPath) ?? string.Empty;
@@ -149,7 +118,7 @@ namespace QuanLyQuanCafe.Services
                 {
                     lineNumber++;
                     if (string.IsNullOrWhiteSpace(line)) continue;
-                    if (line.TrimStart().StartsWith("#")) continue; // Bỏ qua dòng comment nếu có
+                    if (line.TrimStart().StartsWith("#")) continue;
 
                     try
                     {
@@ -165,7 +134,6 @@ namespace QuanLyQuanCafe.Services
                     }
                     catch (Exception ex)
                     {
-                        // Dòng dữ liệu sai định dạng bị bỏ qua không làm chương trình dừng
                         GhiLog($"Lỗi xử lý dòng {lineNumber} trong file '{fileName}': \"{line}\"", ex);
                     }
                 }
@@ -178,10 +146,6 @@ namespace QuanLyQuanCafe.Services
             return danhSach;
         }
 
-        /// <summary>
-        /// Ghi danh sách đối tượng T vào file văn bản (.txt hoặc .csv)
-        /// Dùng StreamWriter với Encoding UTF-8, các trường ngăn cách bởi ';'
-        /// </summary>
         public static bool GhiTapTin<T>(string fileName, IEnumerable<T> danhSach, Func<T, string> chuyenThanhDong)
         {
             string fullPath = GetFullPath(fileName);
@@ -209,14 +173,10 @@ namespace QuanLyQuanCafe.Services
             }
         }
 
-        /// <summary>
-        /// Xuất dữ liệu ra file CSV chuẩn UTF-8 (có BOM để mở bằng Excel không lỗi font tiếng Việt)
-        /// </summary>
         public static bool XuatCsv<T>(string duongDanFile, string tieuDeCot, IEnumerable<T> danhSach, Func<T, string> dinhDangDong)
         {
             try
             {
-                // UTF-8 với BOM giúp Microsoft Excel hiển thị đúng tiếng Việt có dấu
                 using var sw = new StreamWriter(duongDanFile, append: false, encoding: new UTF8Encoding(true));
                 if (!string.IsNullOrWhiteSpace(tieuDeCot))
                 {
@@ -239,9 +199,6 @@ namespace QuanLyQuanCafe.Services
             }
         }
 
-        /// <summary>
-        /// Nhập dữ liệu từ file CSV, kiểm tra từng dòng, ghi log lỗi nếu có
-        /// </summary>
         public static List<T> NhapCsv<T>(string duongDanFile, Func<string, T?> parser, bool boQuaTieuDe, out int soDongThanhCong, out int soDongLoi)
         {
             var danhSach = new List<T>();
@@ -295,9 +252,6 @@ namespace QuanLyQuanCafe.Services
             return danhSach;
         }
 
-        /// <summary>
-        /// Sao lưu toàn bộ thư mục Data sang thư mục đích
-        /// </summary>
         public static bool SaoLuuThuMucData(string thuMucDich, out string thongBao)
         {
             try
@@ -313,7 +267,6 @@ namespace QuanLyQuanCafe.Services
                     Directory.CreateDirectory(thuMucDich);
                 }
 
-                // Copy toàn bộ files
                 foreach (string file in Directory.GetFiles(DataDirectory))
                 {
                     string fileName = Path.GetFileName(file);
@@ -321,7 +274,6 @@ namespace QuanLyQuanCafe.Services
                     File.Copy(file, dest, overwrite: true);
                 }
 
-                // Copy thư mục con (Images, ...)
                 foreach (string dir in Directory.GetDirectories(DataDirectory))
                 {
                     string dirName = Path.GetFileName(dir);

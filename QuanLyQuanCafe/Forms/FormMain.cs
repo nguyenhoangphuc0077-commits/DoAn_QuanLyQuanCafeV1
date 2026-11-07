@@ -15,11 +15,7 @@ namespace QuanLyQuanCafe.Forms
         private void FormMain_Load(object sender, EventArgs e)
         {
             lblThoiGian.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-
-            // Đảm bảo dữ liệu được khởi tạo
             DataService.Instance.KhoiTaoDuLieu();
-
-            // Mở sẵn Form Thực đơn làm cửa sổ con MDI mặc định
             MoFormCon<FormThucDon>();
         }
 
@@ -28,10 +24,6 @@ namespace QuanLyQuanCafe.Forms
             lblThoiGian.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
-        /// <summary>
-        /// Mở form con bên trong MDI Container
-        /// Bắt buộc kiểm tra ngăn mở trùng form con theo yêu cầu chuẩn CLO2 / Mục 5
-        /// </summary>
         private T MoFormCon<T>() where T : Form, new()
         {
             foreach (Form form in this.MdiChildren)
@@ -64,7 +56,6 @@ namespace QuanLyQuanCafe.Forms
             using var frmDM = new FormQuanLyDanhMuc();
             frmDM.DanhMucUpdated += (s, args) =>
             {
-                // Nếu FormThucDon đang mở thì cập nhật lại ComboBox danh mục
                 foreach (var child in this.MdiChildren)
                 {
                     if (child is FormThucDon frmTD)
@@ -134,7 +125,6 @@ namespace QuanLyQuanCafe.Forms
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Hộp thoại chuẩn hỏi xác nhận khi thoát (CLO2 / Yêu cầu #6)
             if (!ValidationHelper.XacNhan("Bạn có chắc chắn muốn thoát khỏi hệ thống quản lý quán cà phê không?", "Xác nhận thoát"))
             {
                 e.Cancel = true;

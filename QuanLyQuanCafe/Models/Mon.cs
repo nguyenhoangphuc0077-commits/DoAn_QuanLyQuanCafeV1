@@ -2,10 +2,6 @@ using System;
 
 namespace QuanLyQuanCafe.Models
 {
-    /// <summary>
-    /// Thực thể Món trong thực đơn quán cà phê
-    /// Phụ trách: Nguyễn Hoàng Phúc (SV1)
-    /// </summary>
     public class Mon
     {
         public string Ma { get; set; } = string.Empty;
@@ -31,18 +27,12 @@ namespace QuanLyQuanCafe.Models
             Anh = anh;
         }
 
-        /// <summary>
-        /// Bắt buộc có ToString() theo yêu cầu chuẩn CLO1
-        /// </summary>
         public override string ToString()
         {
             string trangThai = ConBan ? "Còn bán" : "Tạm hết";
             return $"{Ten} [Size M: {GiaM:N0} đ] ({trangThai})";
         }
 
-        /// <summary>
-        /// Lấy đơn giá theo kích cỡ S, M, L
-        /// </summary>
         public decimal LayGiaTheoSize(string size)
         {
             return (size ?? "M").Trim().ToUpper() switch
@@ -53,19 +43,11 @@ namespace QuanLyQuanCafe.Models
             };
         }
 
-        /// <summary>
-        /// Định dạng dòng tập tin text phân cách bằng dấu chấm phẩy
-        /// Cấu trúc: Ma;Ten;MaDanhMuc;GiaS;GiaM;GiaL;ConBan;Anh
-        /// </summary>
         public string ToCsvLine()
         {
             return $"{Ma};{Ten};{MaDanhMuc};{GiaS};{GiaM};{GiaL};{ConBan};{Anh}";
         }
 
-        /// <summary>
-        /// Đọc một dòng văn bản và chuyển đổi thành đối tượng Mon
-        /// Sử dụng TryParse để bỏ qua dòng lỗi theo yêu cầu kỹ thuật
-        /// </summary>
         public static Mon? FromCsvLine(string line)
         {
             if (string.IsNullOrWhiteSpace(line)) return null;
@@ -85,7 +67,6 @@ namespace QuanLyQuanCafe.Models
 
             if (!bool.TryParse(parts[6].Trim(), out bool conBan))
             {
-                // Hỗ trợ trường hợp ghi "1"/"0" hoặc "True"/"False"
                 conBan = parts[6].Trim() == "1" || parts[6].Trim().Equals("true", StringComparison.OrdinalIgnoreCase);
             }
 

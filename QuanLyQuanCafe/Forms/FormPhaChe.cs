@@ -33,15 +33,10 @@ namespace QuanLyQuanCafe.Forms
             timerAutoRefresh.Stop();
         }
 
-        /// <summary>
-        /// Timer đồng hồ thực hiện mỗi 1 giây (Chương 3)
-        /// Cập nhật đồng hồ và tính lại thời gian chờ của khách theo phút
-        /// </summary>
         private void timerClock_Tick(object sender, EventArgs e)
         {
             lblDongHo.Text = DateTime.Now.ToString("HH:mm:ss");
 
-            // Cập nhật lại cột thời gian chờ trên ListView mà không cần reload toàn bộ
             foreach (ListViewItem item in lvwPhaChe.Items)
             {
                 if (item.Tag is DonPhaChe don)
@@ -49,30 +44,23 @@ namespace QuanLyQuanCafe.Forms
                     var phut = (int)(DateTime.Now - don.ThoiGianGoi).TotalMinutes;
                     item.SubItems[6].Text = $"{phut} phút";
 
-                    // Cảnh báo đỏ nếu khách chờ quá 10 phút chưa có món
                     if (don.TrangThai == "Chờ pha chế" && phut >= 10)
                     {
-                        item.BackColor = Color.FromArgb(255, 205, 210); // Đỏ nhạt cảnh báo
+                        item.BackColor = Color.FromArgb(255, 205, 210);
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// Timer tự động quét kiểm tra món mới từ quầy gọi món (Task T2.5)
-        /// Chu kỳ 3000ms (3 giây)
-        /// </summary>
         private void timerAutoRefresh_Tick(object sender, EventArgs e)
         {
             if (!chkAutoRefresh.Checked) return;
 
-            // Đọc lại file đơn pha chế
             DataService.Instance.NapDanhSachDonPhaChe();
             int currentCount = DataService.Instance.DanhSachDonPhaChe.Count(d => d.TrangThai != "Hoàn thành");
 
             if (currentCount > _lastCount)
             {
-                // Có order mới xuất hiện: phát âm thanh thông báo
                 try { SystemSounds.Asterisk.Play(); } catch { }
             }
             _lastCount = currentCount;
@@ -80,9 +68,6 @@ namespace QuanLyQuanCafe.Forms
             HienThiDanhSachPhaChe(giuViTriChon: true);
         }
 
-        /// <summary>
-        /// Hiển thị danh sách món cần pha chế lên ListView
-        /// </summary>
         private void HienThiDanhSachPhaChe(bool giuViTriChon = false)
         {
             string? selectedOrderId = null;
@@ -128,24 +113,23 @@ namespace QuanLyQuanCafe.Forms
                 lvi.SubItems.Add(don.TrangThai);
                 lvi.Tag = don;
 
-                // Định dạng màu sắc trực quan cho quầy Barista
                 if (don.TrangThai == "Chờ pha chế")
                 {
-                    lvi.ForeColor = Color.FromArgb(230, 81, 0); // Cam đậm
+                    lvi.ForeColor = Color.FromArgb(230, 81, 0);
                     if (phutCho >= 10)
-                        lvi.BackColor = Color.FromArgb(255, 205, 210); // Cảnh báo quá lâu
+                        lvi.BackColor = Color.FromArgb(255, 205, 210);
                     else
-                        lvi.BackColor = Color.FromArgb(255, 248, 225); // Vàng nhạt
+                        lvi.BackColor = Color.FromArgb(255, 248, 225);
                 }
                 else if (don.TrangThai == "Đang pha chế")
                 {
-                    lvi.ForeColor = Color.FromArgb(21, 101, 192); // Xanh dương
+                    lvi.ForeColor = Color.FromArgb(21, 101, 192);
                     lvi.BackColor = Color.FromArgb(227, 242, 253);
                     lvi.Font = new Font(lvwPhaChe.Font, FontStyle.Bold);
                 }
                 else if (don.TrangThai == "Hoàn thành")
                 {
-                    lvi.ForeColor = Color.FromArgb(46, 125, 50); // Xanh lá
+                    lvi.ForeColor = Color.FromArgb(46, 125, 50);
                     lvi.BackColor = Color.FromArgb(232, 245, 233);
                 }
 
@@ -159,7 +143,6 @@ namespace QuanLyQuanCafe.Forms
 
             lvwPhaChe.EndUpdate();
 
-            // Cập nhật thanh trạng thái
             lblTongCho.Text = $"Chờ pha chế: {choPha} món";
             lblDangPha.Text = $"| Đang pha chế: {dangPha} món";
             lblDaXong.Text = $"| Hoàn thành: {daXong} món";
@@ -238,10 +221,6 @@ namespace QuanLyQuanCafe.Forms
             }
         }
 
-        /// <summary>
-        /// Chức năng sinh dữ liệu ngẫu nhiên hỗ trợ việc thuyết trình/demo trực tiếp (Chương 4 / Điểm cộng)
-        /// Giúp giáo viên thấy ngay order mới xuất hiện và Timer đếm giờ tự động
-        /// </summary>
         private void btnGiaLapDon_Click(object sender, EventArgs e)
         {
             var dsMonConBan = DataService.Instance.DanhSachMon.Where(m => m.ConBan).ToList();

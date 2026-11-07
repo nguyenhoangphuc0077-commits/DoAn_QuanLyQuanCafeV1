@@ -2,10 +2,6 @@ using System;
 
 namespace QuanLyQuanCafe.Models
 {
-    /// <summary>
-    /// Thực thể Đơn hàng pha chế dành cho quầy Barista
-    /// Phục vụ chức năng nâng cao T2.5 [Màn hình pha chế dùng Timer]
-    /// </summary>
     public class DonPhaChe
     {
         public string MaOrder { get; set; } = string.Empty;
@@ -17,7 +13,7 @@ namespace QuanLyQuanCafe.Models
         public int SoLuong { get; set; } = 1;
         public DateTime ThoiGianGoi { get; set; } = DateTime.Now;
         public string GhiChu { get; set; } = string.Empty;
-        public string TrangThai { get; set; } = "Chờ pha chế"; // "Chờ pha chế", "Đang pha chế", "Hoàn thành"
+        public string TrangThai { get; set; } = "Chờ pha chế";
 
         public DonPhaChe() { }
 
