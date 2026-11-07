@@ -8,3 +8,7 @@
 *.sln.docstates
 ~$*
 
+# Tai lieu, de tai va tracking ca nhan
+*.pdf
+*.docx
+*.xlsx
