@@ -30,24 +30,8 @@ namespace QuanLyQuanCafe.Forms
 
         private void DocFileBan()
         {
-            _dsBan.Clear();
-            if (!File.Exists(_filePath))
-            {
-                MessageBox.Show("Không tìm thấy file: " + _filePath);
-                return;
-            }
-
-            using (StreamReader sr = new StreamReader(_filePath, Encoding.UTF8))
-            {
-                string line;
-                bool isHeader = true;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    if (string.IsNullOrWhiteSpace(line)) continue;
-                    if (isHeader) { isHeader = false; continue; }
-                    try { _dsBan.Add(Ban.FromCsv(line)); } catch { }
-                }
-            }
+            Repositories.BanRepository repo = new Repositories.BanRepository();
+            _dsBan = repo.LoadAll();
         }
 
         private void LoadComboBox()
@@ -122,11 +106,7 @@ namespace QuanLyQuanCafe.Forms
             }
         }
 
-        private void cboKhuVuc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
+        // --- LOGIC CHUYỂN BÀN ---
         private void miChuyenBan_Click(object sender, EventArgs e)
         {
             if (_banDangChon == null || _banDangChon.TrangThai == "Trống")
@@ -134,10 +114,43 @@ namespace QuanLyQuanCafe.Forms
                 MessageBox.Show("Chỉ có thể chuyển bàn đang có khách!", "Thông báo");
                 return;
             }
-            // Tạm thời thông báo, logic thật sẽ làm ở bước sau
-            MessageBox.Show($"Đang chuẩn bị chuyển bàn: {_banDangChon.Ten}");
+
+            // Lọc ra danh sách các bàn đang TRỐNG
+            var dsBanTrong = _dsBan.FindAll(b => b.TrangThai == "Trống");
+            if (dsBanTrong.Count == 0)
+            {
+                MessageBox.Show("Không có bàn trống nào để chuyển!", "Thông báo");
+                return;
+            }
+
+            // Mở Form chọn bàn
+            using (var frm = new frmChonBan(dsBanTrong, "Chọn bàn trống để chuyển tới"))
+            {
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    Ban banDich = frm.BanDuocChon;
+                    var repoHD = new Repositories.HoaDonRepository();
+                    var hd = repoHD.GetHoaDonChuaThanhToan(_banDangChon.Ma);
+
+                    if (hd != null)
+                    {
+                        repoHD.DoiMaBanHoaDon(hd.SoHD, banDich.Ma);
+                        var repoBan = new Repositories.BanRepository();
+                        repoBan.CapNhatTrangThai(_banDangChon.Ma, "Trống");
+                        repoBan.CapNhatTrangThai(banDich.Ma, "Có khách");
+
+                        MessageBox.Show($"Đã chuyển {_banDangChon.Ten} sang {banDich.Ten}", "Thành công");
+                        frmSoDoBan_Load(sender, e);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không tìm thấy hóa đơn chưa thanh toán của bàn này!", "Lỗi");
+                    }
+                }
+            }
         }
 
+        // --- LOGIC GỘP BÀN ---
         private void miGopBan_Click(object sender, EventArgs e)
         {
             if (_banDangChon == null || _banDangChon.TrangThai == "Trống")
@@ -145,7 +158,45 @@ namespace QuanLyQuanCafe.Forms
                 MessageBox.Show("Chỉ có thể gộp bàn đang có khách!", "Thông báo");
                 return;
             }
-            MessageBox.Show($"Đang chuẩn bị gộp bàn: {_banDangChon.Ten}");
+
+            // Lọc ra danh sách các bàn đang CÓ KHÁCH (trừ bàn hiện tại)
+            var dsBanKhach = _dsBan.FindAll(b => b.TrangThai == "Có khách" && b.Ma != _banDangChon.Ma);
+            if (dsBanKhach.Count == 0)
+            {
+                MessageBox.Show("Cần ít nhất 2 bàn có khách để gộp!", "Thông báo");
+                return;
+            }
+
+            // Mở Form chọn bàn
+            using (var frm = new frmChonBan(dsBanKhach, "Chọn bàn để gộp vào"))
+            {
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    Ban banDich = frm.BanDuocChon;
+                    var repoHD = new Repositories.HoaDonRepository();
+                    var hdNguon = repoHD.GetHoaDonChuaThanhToan(_banDangChon.Ma);
+                    var hdDich = repoHD.GetHoaDonChuaThanhToan(banDich.Ma);
+
+                    if (hdNguon != null && hdDich != null)
+                    {
+                        // Chuyển hóa đơn bàn nguồn sang bàn đích
+                        repoHD.DoiMaBanHoaDon(hdNguon.SoHD, banDich.Ma);
+
+                        // Bàn nguồn thành trống
+                        var repoBan = new Repositories.BanRepository();
+                        repoBan.CapNhatTrangThai(_banDangChon.Ma, "Trống");
+
+                        MessageBox.Show($"Đã gộp {_banDangChon.Ten} vào {banDich.Ten}", "Thành công");
+                        frmSoDoBan_Load(sender, e);
+                    }
+                    else // THÊM ĐOẠN ELSE NÀY ĐỂ BÁO LỖI
+                    {
+                        MessageBox.Show("Không tìm thấy hóa đơn chưa thanh toán của một trong hai bàn!", "Lỗi");
+                    }
+                }
+            }
         }
+
+      
     }
 }
