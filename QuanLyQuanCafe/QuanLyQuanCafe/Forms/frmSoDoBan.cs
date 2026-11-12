@@ -1,4 +1,5 @@
 ﻿using QuanLyQuanCafe.Models;
+using QuanLyQuanCafe.Models.QuanLyQuanCafe.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -87,18 +88,17 @@ namespace QuanLyQuanCafe.Forms
             Button btn = (Button)sender;
             Ban ban = (Ban)btn.Tag;
 
-            lvChiTiet.Items.Clear(); // Xóa dữ liệu cũ
+            lvChiTiet.Items.Clear();
 
-            if (ban.TrangThai == "Trống") return; // Bàn trống thì không có món
+            if (ban.TrangThai == "Trống") return;
 
-            // Gọi Repository để lấy dữ liệu thật từ file txt
             Repositories.HoaDonRepository repo = new Repositories.HoaDonRepository();
             var dsMon = repo.GetChiTietByMaBan(ban.Ma);
 
-            // Đổ dữ liệu ra ListView
+            // Chỉ giữ lại vòng lặp này để hiển thị ra ListView
             foreach (var mon in dsMon)
             {
-                ListViewItem item = new ListViewItem(mon.MaMon); // Tạm hiện Mã món
+                ListViewItem item = new ListViewItem(mon.MaMon);
                 item.SubItems.Add(mon.Size);
                 item.SubItems.Add(mon.SoLuong.ToString());
                 item.SubItems.Add(mon.ThanhTien.ToString("N0"));
@@ -197,6 +197,48 @@ namespace QuanLyQuanCafe.Forms
             }
         }
 
-      
+        private void miGoiMon_Click(object sender, EventArgs e)
+        {
+            if (_banDangChon == null)
+            {
+                MessageBox.Show("Vui lòng chọn một bàn trước!", "Thông báo");
+                return;
+            }
+
+            // TẠM THỜI: Tạo dữ liệu món giả lập để test (M01, Size M, 1 ly, 35k)
+            // (Sau này bạn sẽ thay bằng Form Gọi Món thực tế)
+            string maMon = "M01";
+            string size = "M";
+            int soLuong = 1;
+            decimal donGia = 35000;
+
+            var repoHD = new Repositories.HoaDonRepository();
+
+            // 1. Kiểm tra xem bàn đã có hóa đơn chưa thanh toán chưa
+            var hd = repoHD.GetHoaDonChuaThanhToan(_banDangChon.Ma);
+
+            if (hd == null)
+            {
+                // Nếu chưa có, tạo hóa đơn mới (Số HĐ ngẫu nhiên theo thời gian)
+                string newSoHD = "HD" + DateTime.Now.ToString("ddHHmmss");
+
+                // Lưu hóa đơn mới vào file
+                repoHD.TaoHoaDonMoi(newSoHD, _banDangChon.Ma);
+
+                // Đổi trạng thái bàn sang Có khách
+                var repoBan = new Repositories.BanRepository();
+                repoBan.CapNhatTrangThai(_banDangChon.Ma, "Có khách");
+
+                hd = new HoaDon { SoHD = newSoHD, MaBan = _banDangChon.Ma };
+            }
+
+            // 2. Thêm món vào chi tiết hóa đơn
+            repoHD.ThemChiTietHoaDon(hd.SoHD, maMon, size, soLuong, donGia);
+
+            MessageBox.Show($"Đã gọi món {maMon} cho {_banDangChon.Ten}!", "Thành công");
+
+            // Load lại form để cập nhật giao diện màu sắc bàn
+            frmSoDoBan_Load(sender, e);
+        }
     }
 }
