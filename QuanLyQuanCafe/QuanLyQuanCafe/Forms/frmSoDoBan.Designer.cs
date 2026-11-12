@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pnlSoDo = new System.Windows.Forms.Panel();
             this.cboKhuVuc = new System.Windows.Forms.ComboBox();
             this.lvChiTiet = new System.Windows.Forms.ListView();
@@ -35,7 +36,11 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cmsBan = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miChuyenBan = new System.Windows.Forms.ToolStripMenuItem();
+            this.miGopBan = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlSoDo.SuspendLayout();
+            this.cmsBan.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlSoDo
@@ -87,6 +92,28 @@
             this.columnHeader4.Text = "Thành tiền";
             this.columnHeader4.Width = 85;
             // 
+            // cmsBan
+            // 
+            this.cmsBan.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miChuyenBan,
+            this.miGopBan});
+            this.cmsBan.Name = "cmsBan";
+            this.cmsBan.Size = new System.Drawing.Size(181, 70);
+            // 
+            // miChuyenBan
+            // 
+            this.miChuyenBan.Name = "miChuyenBan";
+            this.miChuyenBan.Size = new System.Drawing.Size(180, 22);
+            this.miChuyenBan.Text = "Chuyển bàn";
+            this.miChuyenBan.Click += new System.EventHandler(this.miChuyenBan_Click);
+            // 
+            // miGopBan
+            // 
+            this.miGopBan.Name = "miGopBan";
+            this.miGopBan.Size = new System.Drawing.Size(180, 22);
+            this.miGopBan.Text = "Gộp bàn";
+            this.miGopBan.Click += new System.EventHandler(this.miGopBan_Click);
+            // 
             // frmSoDoBan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -98,6 +125,7 @@
             this.Text = "frmSoDoBan";
             this.Load += new System.EventHandler(this.frmSoDoBan_Load);
             this.pnlSoDo.ResumeLayout(false);
+            this.cmsBan.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -111,5 +139,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ContextMenuStrip cmsBan;
+        private System.Windows.Forms.ToolStripMenuItem miChuyenBan;
+        private System.Windows.Forms.ToolStripMenuItem miGopBan;
     }
 }

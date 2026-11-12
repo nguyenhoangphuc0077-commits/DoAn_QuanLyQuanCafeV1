@@ -15,7 +15,7 @@ namespace QuanLyQuanCafe.Forms
     {
         private List<Ban> _dsBan = new List<Ban>();
         private string _filePath = Path.Combine(Application.StartupPath, "Data", "ban.txt");
-
+        private Ban _banDangChon; // Lưu bàn đang click chuột phải
         public frmSoDoBan()
         {
             InitializeComponent();
@@ -82,11 +82,20 @@ namespace QuanLyQuanCafe.Forms
 
                 // THÊM DÒNG NÀY ĐỂ BẮT SỰ KIỆN CLICK:
                 btn.Click += BtnBan_Click;
-
+                btn.MouseDown += BtnBan_MouseDown; 
                 pnlSoDo.Controls.Add(btn);
 
                 x += 110;
                 if (x > pnlSoDo.Width - 100) { x = 10; y += 80; }
+            }
+        }
+        private void BtnBan_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Button btn = (Button)sender;
+                _banDangChon = (Ban)btn.Tag;
+                cmsBan.Show(btn, e.Location); // Hiện menu tại vị trí chuột
             }
         }
         private void BtnBan_Click(object sender, EventArgs e)
@@ -116,6 +125,27 @@ namespace QuanLyQuanCafe.Forms
         private void cboKhuVuc_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void miChuyenBan_Click(object sender, EventArgs e)
+        {
+            if (_banDangChon == null || _banDangChon.TrangThai == "Trống")
+            {
+                MessageBox.Show("Chỉ có thể chuyển bàn đang có khách!", "Thông báo");
+                return;
+            }
+            // Tạm thời thông báo, logic thật sẽ làm ở bước sau
+            MessageBox.Show($"Đang chuẩn bị chuyển bàn: {_banDangChon.Ten}");
+        }
+
+        private void miGopBan_Click(object sender, EventArgs e)
+        {
+            if (_banDangChon == null || _banDangChon.TrangThai == "Trống")
+            {
+                MessageBox.Show("Chỉ có thể gộp bàn đang có khách!", "Thông báo");
+                return;
+            }
+            MessageBox.Show($"Đang chuẩn bị gộp bàn: {_banDangChon.Ten}");
         }
     }
 }
