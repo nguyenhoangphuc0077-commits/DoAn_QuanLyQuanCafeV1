@@ -80,11 +80,42 @@ namespace QuanLyQuanCafe.Forms
                 btn.Tag = ban;
                 btn.BackColor = ban.TrangThai == "Trống" ? Color.LightGreen : Color.LightCoral;
 
+                // THÊM DÒNG NÀY ĐỂ BẮT SỰ KIỆN CLICK:
+                btn.Click += BtnBan_Click;
+
                 pnlSoDo.Controls.Add(btn);
 
                 x += 110;
                 if (x > pnlSoDo.Width - 100) { x = 10; y += 80; }
             }
+        }
+        private void BtnBan_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            Ban ban = (Ban)btn.Tag;
+
+            lvChiTiet.Items.Clear(); // Xóa dữ liệu cũ
+
+            if (ban.TrangThai == "Trống") return; // Bàn trống thì không có món
+
+            // Gọi Repository để lấy dữ liệu thật từ file txt
+            Repositories.HoaDonRepository repo = new Repositories.HoaDonRepository();
+            var dsMon = repo.GetChiTietByMaBan(ban.Ma);
+
+            // Đổ dữ liệu ra ListView
+            foreach (var mon in dsMon)
+            {
+                ListViewItem item = new ListViewItem(mon.MaMon); // Tạm hiện Mã món
+                item.SubItems.Add(mon.Size);
+                item.SubItems.Add(mon.SoLuong.ToString());
+                item.SubItems.Add(mon.ThanhTien.ToString("N0"));
+                lvChiTiet.Items.Add(item);
+            }
+        }
+
+        private void cboKhuVuc_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

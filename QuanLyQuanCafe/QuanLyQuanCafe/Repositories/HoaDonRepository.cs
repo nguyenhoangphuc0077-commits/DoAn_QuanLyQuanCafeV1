@@ -1,0 +1,67 @@
+﻿using QuanLyQuanCafe.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace QuanLyQuanCafe.Repositories
+{
+    public class HoaDonRepository
+    {
+        private string _pathHD = Path.Combine(Application.StartupPath, "Data", "hoadon.txt");
+        private string _pathCT = Path.Combine(Application.StartupPath, "Data", "chitiethoadon.txt");
+
+        public List<ChiTietHoaDon> GetChiTietByMaBan(string maBan)
+        {
+            List<ChiTietHoaDon> list = new List<ChiTietHoaDon>();
+            if (!File.Exists(_pathHD) || !File.Exists(_pathCT)) return list;
+
+            // 1. Tìm hóa đơn chưa thanh toán của bàn
+            string soHD = null;
+            using (StreamReader sr = new StreamReader(_pathHD, Encoding.UTF8))
+            {
+                string line;
+                bool isHeader = true;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (isHeader) { isHeader = false; continue; }
+                    var parts = line.Split(';');
+                    if (parts.Length >= 7 && parts[1] == maBan && parts[6] == "Chưa thanh toán")
+                    {
+                        soHD = parts[0];
+                        break;
+                    }
+                }
+            }
+
+            if (soHD == null) return list;
+
+            // 2. Lấy các món của hóa đơn đó
+            using (StreamReader sr = new StreamReader(_pathCT, Encoding.UTF8))
+            {
+                string line;
+                bool isHeader = true;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (isHeader) { isHeader = false; continue; }
+                    var parts = line.Split(';');
+                    if (parts.Length >= 6 && parts[0] == soHD)
+                    {
+                        list.Add(new ChiTietHoaDon
+                        {
+                            SoHD = parts[0],
+                            MaMon = parts[1],
+                            Size = parts[2],
+                            SoLuong = int.Parse(parts[3]),
+                            DonGia = decimal.Parse(parts[4])
+                        });
+                    }
+                }
+            }
+            return list;
+        }
+    }
+}
