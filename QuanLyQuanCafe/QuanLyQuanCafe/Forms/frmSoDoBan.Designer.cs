@@ -39,6 +39,7 @@
             this.cmsBan = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miChuyenBan = new System.Windows.Forms.ToolStripMenuItem();
             this.miGopBan = new System.Windows.Forms.ToolStripMenuItem();
+            this.miGoiMon = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlSoDo.SuspendLayout();
             this.cmsBan.SuspendLayout();
             this.SuspendLayout();
@@ -50,7 +51,7 @@
             this.pnlSoDo.Name = "pnlSoDo";
             this.pnlSoDo.Size = new System.Drawing.Size(307, 261);
             this.pnlSoDo.TabIndex = 0;
-            
+            // 
             // cboKhuVuc
             // 
             this.cboKhuVuc.FormattingEnabled = true;
@@ -95,9 +96,10 @@
             // 
             this.cmsBan.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miChuyenBan,
-            this.miGopBan});
+            this.miGopBan,
+            this.miGoiMon});
             this.cmsBan.Name = "cmsBan";
-            this.cmsBan.Size = new System.Drawing.Size(139, 48);
+            this.cmsBan.Size = new System.Drawing.Size(181, 92);
             // 
             // miChuyenBan
             // 
@@ -112,6 +114,13 @@
             this.miGopBan.Size = new System.Drawing.Size(180, 22);
             this.miGopBan.Text = "Gộp bàn";
             this.miGopBan.Click += new System.EventHandler(this.miGopBan_Click);
+            // 
+            // miGoiMon
+            // 
+            this.miGoiMon.Name = "miGoiMon";
+            this.miGoiMon.Size = new System.Drawing.Size(180, 22);
+            this.miGoiMon.Text = "Gọi món";
+            this.miGoiMon.Click += new System.EventHandler(this.miGoiMon_Click);
             // 
             // frmSoDoBan
             // 
@@ -141,5 +150,6 @@
         private System.Windows.Forms.ContextMenuStrip cmsBan;
         private System.Windows.Forms.ToolStripMenuItem miChuyenBan;
         private System.Windows.Forms.ToolStripMenuItem miGopBan;
+        private System.Windows.Forms.ToolStripMenuItem miGoiMon;
     }
 }

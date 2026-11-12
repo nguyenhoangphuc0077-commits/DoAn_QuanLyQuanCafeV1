@@ -110,7 +110,28 @@ namespace QuanLyQuanCafe.Repositories
             }
             File.WriteAllLines(_pathHD, lines, Encoding.UTF8);
         }
+        // Hàm tạo hóa đơn mới
+        public void TaoHoaDonMoi(string soHD, string maBan)
+        {
+            if (!File.Exists(_pathHD)) return;
+            using (StreamWriter sw = new StreamWriter(_pathHD, true, Encoding.UTF8))
+            {
+                // Ghi thêm dòng mới: SoHD;MaBan;GioVao;GioRa;GiamGia;TongTien;TrangThai
+                sw.WriteLine($"{soHD};{maBan};{DateTime.Now:dd/MM/yyyy HH:mm};;0;0;Chưa thanh toán");
+            }
+        }
 
+        // Hàm thêm món vào chi tiết hóa đơn
+        public void ThemChiTietHoaDon(string soHD, string maMon, string size, int soLuong, decimal donGia)
+        {
+            if (!File.Exists(_pathCT)) return;
+            using (StreamWriter sw = new StreamWriter(_pathCT, true, Encoding.UTF8))
+            {
+                decimal thanhTien = soLuong * donGia;
+                // Ghi thêm dòng mới: SoHD;MaMon;Size;SoLuong;DonGia;ThanhTien
+                sw.WriteLine($"{soHD};{maMon};{size};{soLuong};{donGia};{thanhTien}");
+            }
+        }  
     }
 }
 
