@@ -50,7 +50,7 @@
             this.pnlSoDo.Name = "pnlSoDo";
             this.pnlSoDo.Size = new System.Drawing.Size(307, 261);
             this.pnlSoDo.TabIndex = 0;
-            // 
+            
             // cboKhuVuc
             // 
             this.cboKhuVuc.FormattingEnabled = true;
@@ -58,7 +58,6 @@
             this.cboKhuVuc.Name = "cboKhuVuc";
             this.cboKhuVuc.Size = new System.Drawing.Size(121, 21);
             this.cboKhuVuc.TabIndex = 0;
-            this.cboKhuVuc.SelectedIndexChanged += new System.EventHandler(this.cboKhuVuc_SelectedIndexChanged);
             // 
             // lvChiTiet
             // 
@@ -98,7 +97,7 @@
             this.miChuyenBan,
             this.miGopBan});
             this.cmsBan.Name = "cmsBan";
-            this.cmsBan.Size = new System.Drawing.Size(181, 70);
+            this.cmsBan.Size = new System.Drawing.Size(139, 48);
             // 
             // miChuyenBan
             // 
