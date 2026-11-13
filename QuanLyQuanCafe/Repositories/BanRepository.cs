@@ -2,11 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 
 namespace QuanLyQuanCafe.Repositories
 {
@@ -16,7 +13,6 @@ namespace QuanLyQuanCafe.Repositories
 
         public BanRepository()
         {
-            // Đường dẫn tới thư mục Data
             string dataDir = Path.Combine(Application.StartupPath, "Data");
             _filePath = Path.Combine(dataDir, "ban.txt");
         }
@@ -28,28 +24,32 @@ namespace QuanLyQuanCafe.Repositories
 
             try
             {
-                using (var reader = new StreamReader(_filePath, Encoding.UTF8))
+                using var reader = new StreamReader(_filePath, Encoding.UTF8);
+                string? line;
+                bool isFirstLine = true;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    string line;
-                    bool isFirstLine = true;
-                    while ((line = reader.ReadLine()) != null)
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    string clean = line.TrimStart('\uFEFF', ' ').Trim();
+                    if (isFirstLine && clean.StartsWith("Ma;", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (string.IsNullOrWhiteSpace(line)) continue;
-                        if (isFirstLine && line.StartsWith("Ma;Ten"))
-                        {
-                            isFirstLine = false;
-                            continue;
-                        }
                         isFirstLine = false;
+                        continue;
+                    }
+                    isFirstLine = false;
 
-                        try { list.Add(Ban.FromCsv(line)); }
-                        catch { /* Bỏ qua dòng lỗi */ }
+                    try
+                    {
+                        list.Add(Ban.FromCsv(line));
+                    }
+                    catch
+                    {
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi đọc file ban.txt: " + ex.Message);
+                MessageBox.Show("Lỗi đọc file ban.txt: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return list;
         }
@@ -58,19 +58,19 @@ namespace QuanLyQuanCafe.Repositories
         {
             try
             {
-                using (var writer = new StreamWriter(_filePath, false, Encoding.UTF8))
+                using var writer = new StreamWriter(_filePath, false, Encoding.UTF8);
+                writer.WriteLine("Ma;Ten;KhuVuc;TrangThai");
+                foreach (var b in dsBan)
                 {
-                    writer.WriteLine("Ma;Ten;KhuVuc;TrangThai");
-                    foreach (var b in dsBan) writer.WriteLine(b.ToCsv());
+                    writer.WriteLine(b.ToCsv());
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi ghi file ban.txt: " + ex.Message);
+                MessageBox.Show("Lỗi ghi file ban.txt: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Hàm cập nhật trạng thái bàn (dùng cho Chuyển/Gộp bàn)
         public void CapNhatTrangThai(string maBan, string trangThaiMoi)
         {
             var dsBan = LoadAll();

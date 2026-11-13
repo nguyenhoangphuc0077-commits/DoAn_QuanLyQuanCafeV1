@@ -72,6 +72,11 @@ namespace QuanLyQuanCafe.Forms
             MoFormCon<FormPhaChe>();
         }
 
+        private void mnuSoDoBan_Click(object sender, EventArgs e)
+        {
+            MoFormCon<frmSoDoBan>();
+        }
+
         private void mnuCascade_Click(object sender, EventArgs e)
         {
             this.LayoutMdi(MdiLayout.Cascade);

@@ -1,7 +1,0 @@
-﻿Ma;Ten;KhuVuc;TrangThai
-B01;Bàn 1;Tầng trệt;Trống
-B02;Bàn 2;Tầng trệt;Trống
-B03;Bàn 3;Tầng trệt;Có khách
-B04;Bàn 4;Tầng 2;Trống
-B05;Bàn 5;Tầng 2;Có khách
-B06;Bàn 6;Sân vườn;Trống

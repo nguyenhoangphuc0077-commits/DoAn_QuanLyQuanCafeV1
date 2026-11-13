@@ -25,6 +25,7 @@ namespace QuanLyQuanCafe.Forms
 
         private System.Windows.Forms.ToolStripMenuItem mnuTroGiup;
         private System.Windows.Forms.ToolStripMenuItem mnuThongTinSV;
+        private System.Windows.Forms.ToolStripMenuItem mnuSoDoBan;
 
         private System.Windows.Forms.StatusStrip statusStripMain;
         private System.Windows.Forms.ToolStripStatusLabel lblNguoiDung;
@@ -63,6 +64,7 @@ namespace QuanLyQuanCafe.Forms
             this.mnuDongTatCa = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTroGiup = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuThongTinSV = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSoDoBan = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
             this.lblNguoiDung = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblPhanHe = new System.Windows.Forms.ToolStripStatusLabel();
@@ -77,6 +79,7 @@ namespace QuanLyQuanCafe.Forms
             this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuHeThong,
             this.mnuThucDon,
+            this.mnuSoDoBan,
             this.mnuCuaSo,
             this.mnuTroGiup});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
@@ -172,6 +175,15 @@ namespace QuanLyQuanCafe.Forms
             this.mnuManHinhPhaChe.Text = "Màn hình &Pha chế [Timer]";
             this.mnuManHinhPhaChe.Click += new System.EventHandler(this.mnuManHinhPhaChe_Click);
 
+            // 
+            // mnuSoDoBan
+            // 
+            this.mnuSoDoBan.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.mnuSoDoBan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.mnuSoDoBan.Name = "mnuSoDoBan";
+            this.mnuSoDoBan.Size = new System.Drawing.Size(180, 21);
+            this.mnuSoDoBan.Text = "&Sơ đồ bàn (SV2: Trung)";
+            this.mnuSoDoBan.Click += new System.EventHandler(this.mnuSoDoBan_Click);
             // 
             // mnuCuaSo
             // 
