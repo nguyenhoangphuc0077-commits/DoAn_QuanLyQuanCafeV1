@@ -1,4 +1,4 @@
-﻿using QuanLyQuanCafe.Models;
+using QuanLyQuanCafe.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

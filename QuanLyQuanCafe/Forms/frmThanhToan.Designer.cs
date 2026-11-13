@@ -1,4 +1,4 @@
-﻿namespace QuanLyQuanCafe.Forms
+namespace QuanLyQuanCafe.Forms
 {
     partial class frmThanhToan
     {
