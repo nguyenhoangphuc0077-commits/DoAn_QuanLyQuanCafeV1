@@ -99,26 +99,26 @@
             this.miGopBan,
             this.miGoiMon});
             this.cmsBan.Name = "cmsBan";
-            this.cmsBan.Size = new System.Drawing.Size(181, 92);
+            this.cmsBan.Size = new System.Drawing.Size(139, 70);
             // 
             // miChuyenBan
             // 
             this.miChuyenBan.Name = "miChuyenBan";
-            this.miChuyenBan.Size = new System.Drawing.Size(180, 22);
+            this.miChuyenBan.Size = new System.Drawing.Size(138, 22);
             this.miChuyenBan.Text = "Chuyển bàn";
             this.miChuyenBan.Click += new System.EventHandler(this.miChuyenBan_Click);
             // 
             // miGopBan
             // 
             this.miGopBan.Name = "miGopBan";
-            this.miGopBan.Size = new System.Drawing.Size(180, 22);
+            this.miGopBan.Size = new System.Drawing.Size(138, 22);
             this.miGopBan.Text = "Gộp bàn";
             this.miGopBan.Click += new System.EventHandler(this.miGopBan_Click);
             // 
             // miGoiMon
             // 
             this.miGoiMon.Name = "miGoiMon";
-            this.miGoiMon.Size = new System.Drawing.Size(180, 22);
+            this.miGoiMon.Size = new System.Drawing.Size(138, 22);
             this.miGoiMon.Text = "Gọi món";
             this.miGoiMon.Click += new System.EventHandler(this.miGoiMon_Click);
             // 
