@@ -77,6 +77,12 @@ namespace QuanLyQuanCafe.Forms
             MoFormCon<frmSoDoBan>();
         }
 
+        private void mnuThanhToan_Click(object sender, EventArgs e)
+        {
+            using var frm = new frmThanhToan("HD01", "B03");
+            frm.ShowDialog(this);
+        }
+
         private void mnuCascade_Click(object sender, EventArgs e)
         {
             this.LayoutMdi(MdiLayout.Cascade);

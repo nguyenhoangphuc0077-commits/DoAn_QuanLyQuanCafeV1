@@ -230,6 +230,31 @@ namespace QuanLyQuanCafe.Forms
             VeSoDoBan(curFilter == "Tất cả" ? null : curFilter);
         }
 
+        private void miThanhToan_Click(object? sender, EventArgs e)
+        {
+            if (_banDangChon == null || _banDangChon.TrangThai == "Trống")
+            {
+                MessageBox.Show("Chỉ có thể thanh toán cho bàn đang có khách!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var hd = _repoHD.GetHoaDonChuaThanhToan(_banDangChon.Ma);
+            if (hd == null)
+            {
+                MessageBox.Show("Không tìm thấy hóa đơn chưa thanh toán cho bàn này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            using var frm = new frmThanhToan(hd.SoHD, _banDangChon.Ma);
+            if (frm.ShowDialog(this) == DialogResult.OK)
+            {
+                DocFileBan();
+                string? curFilter = cboKhuVuc.SelectedItem?.ToString();
+                VeSoDoBan(curFilter == "Tất cả" ? null : curFilter);
+                lvChiTiet.Items.Clear();
+            }
+        }
+
         private void tmrCode_Tick(object? sender, EventArgs e)
         {
             this.Text = "Sơ đồ bàn - Quản lý Quán Cà Phê - " + DateTime.Now.ToString("HH:mm:ss");

@@ -40,6 +40,7 @@
             this.miChuyenBan = new System.Windows.Forms.ToolStripMenuItem();
             this.miGopBan = new System.Windows.Forms.ToolStripMenuItem();
             this.miGoiMon = new System.Windows.Forms.ToolStripMenuItem();
+            this.miThanhToan = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlSoDo.SuspendLayout();
             this.cmsBan.SuspendLayout();
             this.SuspendLayout();
@@ -97,30 +98,38 @@
             this.cmsBan.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miChuyenBan,
             this.miGopBan,
-            this.miGoiMon});
+            this.miGoiMon,
+            this.miThanhToan});
             this.cmsBan.Name = "cmsBan";
-            this.cmsBan.Size = new System.Drawing.Size(139, 70);
+            this.cmsBan.Size = new System.Drawing.Size(180, 92);
             // 
             // miChuyenBan
             // 
             this.miChuyenBan.Name = "miChuyenBan";
-            this.miChuyenBan.Size = new System.Drawing.Size(138, 22);
+            this.miChuyenBan.Size = new System.Drawing.Size(179, 22);
             this.miChuyenBan.Text = "Chuyển bàn";
             this.miChuyenBan.Click += new System.EventHandler(this.miChuyenBan_Click);
             // 
             // miGopBan
             // 
             this.miGopBan.Name = "miGopBan";
-            this.miGopBan.Size = new System.Drawing.Size(138, 22);
+            this.miGopBan.Size = new System.Drawing.Size(179, 22);
             this.miGopBan.Text = "Gộp bàn";
             this.miGopBan.Click += new System.EventHandler(this.miGopBan_Click);
             // 
             // miGoiMon
             // 
             this.miGoiMon.Name = "miGoiMon";
-            this.miGoiMon.Size = new System.Drawing.Size(138, 22);
+            this.miGoiMon.Size = new System.Drawing.Size(179, 22);
             this.miGoiMon.Text = "Gọi món";
             this.miGoiMon.Click += new System.EventHandler(this.miGoiMon_Click);
+            // 
+            // miThanhToan
+            // 
+            this.miThanhToan.Name = "miThanhToan";
+            this.miThanhToan.Size = new System.Drawing.Size(179, 22);
+            this.miThanhToan.Text = "Thanh toán hóa đơn";
+            this.miThanhToan.Click += new System.EventHandler(this.miThanhToan_Click);
             // 
             // frmSoDoBan
             // 
@@ -151,5 +160,6 @@
         private System.Windows.Forms.ToolStripMenuItem miChuyenBan;
         private System.Windows.Forms.ToolStripMenuItem miGopBan;
         private System.Windows.Forms.ToolStripMenuItem miGoiMon;
+        private System.Windows.Forms.ToolStripMenuItem miThanhToan;
     }
 }
