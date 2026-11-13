@@ -1,4 +1,4 @@
-﻿namespace QuanLyQuanCafe.Forms
+namespace QuanLyQuanCafe.Forms
 {
     partial class frmSoDoBan
     {
@@ -79,19 +79,22 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Tên món";
+            this.columnHeader1.Width = 135;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Size";
+            this.columnHeader2.Width = 45;
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "Số lượng";
+            this.columnHeader3.Text = "SL";
+            this.columnHeader3.Width = 45;
             // 
             // columnHeader4
             // 
             this.columnHeader4.Text = "Thành tiền";
-            this.columnHeader4.Width = 85;
+            this.columnHeader4.Width = 95;
             // 
             // cmsBan
             // 

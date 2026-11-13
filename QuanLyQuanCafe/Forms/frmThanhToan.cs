@@ -43,7 +43,7 @@ namespace QuanLyQuanCafe.Forms
             lvwChiTiet.FullRowSelect = true;
             lvwChiTiet.GridLines = true;
             lvwChiTiet.Columns.Clear();
-            lvwChiTiet.Columns.Add("Mã Món", 90);
+            lvwChiTiet.Columns.Add("Tên Món", 130);
             lvwChiTiet.Columns.Add("Size", 50);
             lvwChiTiet.Columns.Add("Số lượng", 70);
             lvwChiTiet.Columns.Add("Đơn giá", 90);
@@ -64,7 +64,10 @@ namespace QuanLyQuanCafe.Forms
                     var ct = new ChiTietHoaDon(line);
                     if (string.Equals(ct.SoHD, soHDCurrent, StringComparison.OrdinalIgnoreCase))
                     {
-                        var item = new ListViewItem(ct.MaMon)
+                        string tenMon = Services.DataService.Instance.DanhSachMon
+                            .FirstOrDefault(m => string.Equals(m.Ma, ct.MaMon, StringComparison.OrdinalIgnoreCase))?.Ten ?? ct.MaMon;
+
+                        var item = new ListViewItem(tenMon)
                         {
                             Tag = ct
                         };
@@ -215,7 +218,7 @@ namespace QuanLyQuanCafe.Forms
                     {
                         if (item.Tag is ChiTietHoaDon ct)
                         {
-                            sw.WriteLine(string.Format("{0,-15} {1,5} {2,6} {3,12:N0}", ct.MaMon, ct.Size, ct.SoLuong, ct.ThanhTien));
+                            sw.WriteLine(string.Format("{0,-15} {1,5} {2,6} {3,12:N0}", item.Text, ct.Size, ct.SoLuong, ct.ThanhTien));
                         }
                     }
                     sw.WriteLine("----------------------------------------");

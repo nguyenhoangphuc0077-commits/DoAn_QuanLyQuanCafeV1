@@ -1,8 +1,10 @@
-﻿using QuanLyQuanCafe.Models;
+using QuanLyQuanCafe.Models;
 using QuanLyQuanCafe.Repositories;
+using QuanLyQuanCafe.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace QuanLyQuanCafe.Forms
@@ -22,6 +24,7 @@ namespace QuanLyQuanCafe.Forms
 
         private void frmSoDoBan_Load(object? sender, EventArgs e)
         {
+            DataService.Instance.KhoiTaoDuLieu();
             DocFileBan();
             LoadComboBox();
             VeSoDoBan(null);
@@ -82,6 +85,7 @@ namespace QuanLyQuanCafe.Forms
                 };
 
                 btn.Click += BtnBan_Click;
+                btn.DoubleClick += BtnBan_DoubleClick;
                 btn.MouseDown += BtnBan_MouseDown;
                 pnlSoDo.Controls.Add(btn);
 
@@ -99,6 +103,7 @@ namespace QuanLyQuanCafe.Forms
             if (e.Button == MouseButtons.Right && sender is Button btn && btn.Tag is Ban ban)
             {
                 _banDangChon = ban;
+                HienThiChiTietMon(ban.Ma);
                 cmsBan.Show(btn, e.Location);
             }
         }
@@ -107,14 +112,29 @@ namespace QuanLyQuanCafe.Forms
         {
             if (sender is not Button btn || btn.Tag is not Ban ban) return;
             _banDangChon = ban;
+            HienThiChiTietMon(ban.Ma);
+        }
 
+        private void BtnBan_DoubleClick(object? sender, EventArgs e)
+        {
+            if (sender is not Button btn || btn.Tag is not Ban ban) return;
+            _banDangChon = ban;
+            ThucHienGoiMon();
+        }
+
+        private void HienThiChiTietMon(string maBan)
+        {
             lvChiTiet.Items.Clear();
-            if (ban.TrangThai == "Trống") return;
+            var ban = _dsBan.FirstOrDefault(b => b.Ma == maBan);
+            if (ban == null || ban.TrangThai == "Trống") return;
 
-            var dsMon = _repoHD.GetChiTietByMaBan(ban.Ma);
+            var dsMon = _repoHD.GetChiTietByMaBan(maBan);
             foreach (var mon in dsMon)
             {
-                ListViewItem item = new ListViewItem(mon.MaMon);
+                string tenHienThi = DataService.Instance.DanhSachMon
+                    .FirstOrDefault(m => string.Equals(m.Ma, mon.MaMon, StringComparison.OrdinalIgnoreCase))?.Ten ?? mon.MaMon;
+
+                ListViewItem item = new ListViewItem(tenHienThi);
                 item.SubItems.Add(mon.Size);
                 item.SubItems.Add(mon.SoLuong.ToString());
                 item.SubItems.Add(mon.ThanhTien.ToString("N0"));
@@ -153,6 +173,7 @@ namespace QuanLyQuanCafe.Forms
                     DocFileBan();
                     string? curFilter = cboKhuVuc.SelectedItem?.ToString();
                     VeSoDoBan(curFilter == "Tất cả" ? null : curFilter);
+                    lvChiTiet.Items.Clear();
                 }
                 else
                 {
@@ -192,6 +213,7 @@ namespace QuanLyQuanCafe.Forms
                     DocFileBan();
                     string? curFilter = cboKhuVuc.SelectedItem?.ToString();
                     VeSoDoBan(curFilter == "Tất cả" ? null : curFilter);
+                    lvChiTiet.Items.Clear();
                 }
                 else
                 {
@@ -202,32 +224,44 @@ namespace QuanLyQuanCafe.Forms
 
         private void miGoiMon_Click(object? sender, EventArgs e)
         {
+            ThucHienGoiMon();
+        }
+
+        private void ThucHienGoiMon()
+        {
             if (_banDangChon == null)
             {
-                MessageBox.Show("Vui lòng chọn một bàn trước!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng click chọn một bàn trước khi gọi món!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string maMon = "CF01";
-            string size = "M";
-            int soLuong = 1;
-            decimal donGia = 29000;
-
-            var hd = _repoHD.GetHoaDonChuaThanhToan(_banDangChon.Ma);
-            if (hd == null)
+            using var frm = new frmGoiMon(_banDangChon.Ten);
+            if (frm.ShowDialog(this) == DialogResult.OK && frm.MonDuocChon != null)
             {
-                string newSoHD = "HD" + DateTime.Now.ToString("ddHHmmss");
-                _repoHD.TaoHoaDonMoi(newSoHD, _banDangChon.Ma);
-                _repoBan.CapNhatTrangThai(_banDangChon.Ma, "Có khách");
-                hd = new HoaDon { SoHD = newSoHD, MaBan = _banDangChon.Ma, GioVao = DateTime.Now };
+                string maMon = frm.MonDuocChon.Ma;
+                string size = frm.SizeDuocChon;
+                int soLuong = frm.SoLuongDuocChon;
+                decimal donGia = frm.DonGiaDuocChon;
+
+                var hd = _repoHD.GetHoaDonChuaThanhToan(_banDangChon.Ma);
+                if (hd == null)
+                {
+                    string newSoHD = "HD" + DateTime.Now.ToString("ddHHmmss");
+                    _repoHD.TaoHoaDonMoi(newSoHD, _banDangChon.Ma);
+                    _repoBan.CapNhatTrangThai(_banDangChon.Ma, "Có khách");
+                    hd = new HoaDon { SoHD = newSoHD, MaBan = _banDangChon.Ma, GioVao = DateTime.Now };
+                }
+
+                _repoHD.ThemChiTietHoaDon(hd.SoHD, maMon, size, soLuong, donGia);
+
+                MessageBox.Show($"Đã thêm món {frm.MonDuocChon.Ten} (Size {size}, SL: {soLuong}) vào {_banDangChon.Ten}!", "Gọi món thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                DocFileBan();
+                string? curFilter = cboKhuVuc.SelectedItem?.ToString();
+                VeSoDoBan(curFilter == "Tất cả" ? null : curFilter);
+
+                HienThiChiTietMon(_banDangChon.Ma);
             }
-
-            _repoHD.ThemChiTietHoaDon(hd.SoHD, maMon, size, soLuong, donGia);
-
-            MessageBox.Show($"Đã gọi món {maMon} cho {_banDangChon.Ten}!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            DocFileBan();
-            string? curFilter = cboKhuVuc.SelectedItem?.ToString();
-            VeSoDoBan(curFilter == "Tất cả" ? null : curFilter);
         }
 
         private void miThanhToan_Click(object? sender, EventArgs e)
