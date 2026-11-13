@@ -27,6 +27,10 @@ namespace QuanLyQuanCafe.Forms
         private System.Windows.Forms.ToolStripMenuItem mnuThongTinSV;
         private System.Windows.Forms.ToolStripMenuItem mnuSoDoBan;
         private System.Windows.Forms.ToolStripMenuItem mnuThanhToan;
+        private System.Windows.Forms.ToolStripMenuItem mnuThanhToanHoaDon;
+        private System.Windows.Forms.ToolStripMenuItem mnuTachHoaDon;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem mnuTraCuuDoanhThu;
 
         private System.Windows.Forms.StatusStrip statusStripMain;
         private System.Windows.Forms.ToolStripStatusLabel lblNguoiDung;
@@ -67,6 +71,10 @@ namespace QuanLyQuanCafe.Forms
             this.mnuThongTinSV = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSoDoBan = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuThanhToan = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuThanhToanHoaDon = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuTachHoaDon = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuTraCuuDoanhThu = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
             this.lblNguoiDung = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblPhanHe = new System.Windows.Forms.ToolStripStatusLabel();
@@ -190,12 +198,52 @@ namespace QuanLyQuanCafe.Forms
             // 
             // mnuThanhToan
             // 
+            this.mnuThanhToan.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuThanhToanHoaDon,
+            this.mnuTachHoaDon,
+            this.toolStripSeparator4,
+            this.mnuTraCuuDoanhThu});
             this.mnuThanhToan.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.mnuThanhToan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.mnuThanhToan.Name = "mnuThanhToan";
             this.mnuThanhToan.Size = new System.Drawing.Size(185, 21);
             this.mnuThanhToan.Text = "&Thanh toán (SV3: Vũ)";
-            this.mnuThanhToan.Click += new System.EventHandler(this.mnuThanhToan_Click);
+
+            // 
+            // mnuThanhToanHoaDon
+            // 
+            this.mnuThanhToanHoaDon.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mnuThanhToanHoaDon.Name = "mnuThanhToanHoaDon";
+            this.mnuThanhToanHoaDon.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.mnuThanhToanHoaDon.Size = new System.Drawing.Size(295, 22);
+            this.mnuThanhToanHoaDon.Text = "💳 &Thanh toán Hóa đơn...";
+            this.mnuThanhToanHoaDon.Click += new System.EventHandler(this.mnuThanhToanHoaDon_Click);
+
+            // 
+            // mnuTachHoaDon
+            // 
+            this.mnuTachHoaDon.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mnuTachHoaDon.Name = "mnuTachHoaDon";
+            this.mnuTachHoaDon.Size = new System.Drawing.Size(295, 22);
+            this.mnuTachHoaDon.Text = "✂ &Tách Hóa đơn...";
+            this.mnuTachHoaDon.Click += new System.EventHandler(this.mnuTachHoaDon_Click);
+
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(292, 6);
+
+            // 
+            // mnuTraCuuDoanhThu
+            // 
+            this.mnuTraCuuDoanhThu.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.mnuTraCuuDoanhThu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.mnuTraCuuDoanhThu.Name = "mnuTraCuuDoanhThu";
+            this.mnuTraCuuDoanhThu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this.mnuTraCuuDoanhThu.Size = new System.Drawing.Size(295, 22);
+            this.mnuTraCuuDoanhThu.Text = "📊 &Tra cứu HĐ & Doanh thu [Xuất CSV]...";
+            this.mnuTraCuuDoanhThu.Click += new System.EventHandler(this.mnuTraCuuDoanhThu_Click);
             // 
             // mnuCuaSo
             // 

@@ -208,5 +208,151 @@ namespace QuanLyQuanCafe.Repositories
             decimal thanhTien = soLuong * donGia;
             sw.WriteLine($"{soHD};{maMon};{size};{soLuong};{donGia};{thanhTien}");
         }
+
+        public List<HoaDon> LoadAllHoaDon()
+        {
+            var list = new List<HoaDon>();
+            if (!File.Exists(_pathHD)) return list;
+            using var sr = new StreamReader(_pathHD, Encoding.UTF8);
+            string? line;
+            bool isHeader = true;
+            while ((line = sr.ReadLine()) != null)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                if (isHeader && line.TrimStart('\uFEFF', ' ').StartsWith("SoHD;", StringComparison.OrdinalIgnoreCase))
+                {
+                    isHeader = false;
+                    continue;
+                }
+                isHeader = false;
+                try
+                {
+                    list.Add(new HoaDon(line));
+                }
+                catch { }
+            }
+            return list;
+        }
+
+        public List<ChiTietHoaDon> LoadAllChiTiet()
+        {
+            var list = new List<ChiTietHoaDon>();
+            if (!File.Exists(_pathCT)) return list;
+            using var sr = new StreamReader(_pathCT, Encoding.UTF8);
+            string? line;
+            bool isHeader = true;
+            while ((line = sr.ReadLine()) != null)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                if (isHeader && line.TrimStart('\uFEFF', ' ').StartsWith("SoHD;", StringComparison.OrdinalIgnoreCase))
+                {
+                    isHeader = false;
+                    continue;
+                }
+                isHeader = false;
+                try
+                {
+                    list.Add(new ChiTietHoaDon(line));
+                }
+                catch { }
+            }
+            return list;
+        }
+
+        public List<ChiTietHoaDon> GetChiTietBySoHD(string soHD)
+        {
+            return LoadAllChiTiet().FindAll(c => string.Equals(c.SoHD, soHD, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public void SaveAllHoaDon(List<HoaDon> list)
+        {
+            using var sw = new StreamWriter(_pathHD, false, Encoding.UTF8);
+            sw.WriteLine("SoHD;MaBan;GioVao;GioRa;GiamGia;TongTien;TrangThai");
+            foreach (var hd in list)
+            {
+                sw.WriteLine(hd.ToLine());
+            }
+        }
+
+        public void SaveAllChiTiet(List<ChiTietHoaDon> list)
+        {
+            using var sw = new StreamWriter(_pathCT, false, Encoding.UTF8);
+            sw.WriteLine("SoHD;MaMon;Size;SoLuong;DonGia;ThanhTien");
+            foreach (var ct in list)
+            {
+                sw.WriteLine(ct.ToLine());
+            }
+        }
+
+        public bool TachHoaDon(string soHDCu, string soHDMoi, string maBanDich, List<ChiTietHoaDon> dsMonTach)
+        {
+            if (dsMonTach == null || dsMonTach.Count == 0) return false;
+
+            var dsHD = LoadAllHoaDon();
+            var dsCT = LoadAllChiTiet();
+
+            var hdCu = dsHD.Find(h => string.Equals(h.SoHD, soHDCu, StringComparison.OrdinalIgnoreCase));
+            if (hdCu == null) return false;
+
+            var hdMoi = new HoaDon
+            {
+                SoHD = soHDMoi,
+                MaBan = maBanDich,
+                GioVao = DateTime.Now,
+                GiamGia = 0,
+                TongTien = 0,
+                TrangThai = "Chưa thanh toán"
+            };
+            dsHD.Add(hdMoi);
+
+            foreach (var monTach in dsMonTach)
+            {
+                var dongGoc = dsCT.Find(c => string.Equals(c.SoHD, soHDCu, StringComparison.OrdinalIgnoreCase)
+                                           && string.Equals(c.MaMon, monTach.MaMon, StringComparison.OrdinalIgnoreCase)
+                                           && string.Equals(c.Size, monTach.Size, StringComparison.OrdinalIgnoreCase));
+
+                if (dongGoc != null)
+                {
+                    if (dongGoc.SoLuong > monTach.SoLuong)
+                    {
+                        dongGoc.SoLuong -= monTach.SoLuong;
+                        dongGoc.ThanhTien = dongGoc.SoLuong * dongGoc.DonGia;
+
+                        dsCT.Add(new ChiTietHoaDon
+                        {
+                            SoHD = soHDMoi,
+                            MaMon = monTach.MaMon,
+                            Size = monTach.Size,
+                            SoLuong = monTach.SoLuong,
+                            DonGia = monTach.DonGia,
+                            ThanhTien = monTach.SoLuong * monTach.DonGia
+                        });
+                    }
+                    else
+                    {
+                        dongGoc.SoHD = soHDMoi;
+                    }
+                }
+            }
+
+            decimal tongCu = 0;
+            foreach (var c in dsCT.FindAll(c => string.Equals(c.SoHD, soHDCu, StringComparison.OrdinalIgnoreCase)))
+            {
+                tongCu += c.ThanhTien;
+            }
+            hdCu.TongTien = tongCu * (1 - hdCu.GiamGia / 100);
+
+            decimal tongMoi = 0;
+            foreach (var c in dsCT.FindAll(c => string.Equals(c.SoHD, soHDMoi, StringComparison.OrdinalIgnoreCase)))
+            {
+                tongMoi += c.ThanhTien;
+            }
+            hdMoi.TongTien = tongMoi;
+
+            SaveAllHoaDon(dsHD);
+            SaveAllChiTiet(dsCT);
+
+            return true;
+        }
     }
 }

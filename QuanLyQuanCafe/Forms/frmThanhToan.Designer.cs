@@ -28,6 +28,7 @@
             this.txtTienKhachDua = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.lblTienThoi = new System.Windows.Forms.Label();
+            this.btnTachHD = new System.Windows.Forms.Button();
             this.btnThanhToan = new System.Windows.Forms.Button();
             this.btnHuy = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -118,6 +119,17 @@
             this.lblTienThoi.TabIndex = 10;
             this.lblTienThoi.Text = "0 VNĐ";
 
+            this.btnTachHD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(31)))), ((int)(((byte)(162)))));
+            this.btnTachHD.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTachHD.ForeColor = System.Drawing.Color.White;
+            this.btnTachHD.Location = new System.Drawing.Point(145, 465);
+            this.btnTachHD.Name = "btnTachHD";
+            this.btnTachHD.Size = new System.Drawing.Size(115, 40);
+            this.btnTachHD.TabIndex = 13;
+            this.btnTachHD.Text = "✂ Tách HĐ";
+            this.btnTachHD.UseVisualStyleBackColor = false;
+            this.btnTachHD.Click += new System.EventHandler(this.btnTachHD_Click);
+
             this.btnThanhToan.BackColor = System.Drawing.Color.ForestGreen;
             this.btnThanhToan.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnThanhToan.ForeColor = System.Drawing.Color.White;
@@ -142,6 +154,7 @@
             this.ClientSize = new System.Drawing.Size(515, 525);
             this.Controls.Add(this.btnHuy);
             this.Controls.Add(this.btnThanhToan);
+            this.Controls.Add(this.btnTachHD);
             this.Controls.Add(this.lblTienThoi);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtTienKhachDua);
@@ -176,6 +189,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblTienThoi;
         private System.Windows.Forms.Button btnThanhToan;
+        private System.Windows.Forms.Button btnTachHD;
         private System.Windows.Forms.Button btnHuy;
     }
 }

@@ -77,10 +77,43 @@ namespace QuanLyQuanCafe.Forms
             MoFormCon<frmSoDoBan>();
         }
 
-        private void mnuThanhToan_Click(object sender, EventArgs e)
+        private void mnuThanhToanHoaDon_Click(object sender, EventArgs e)
         {
-            using var frm = new frmThanhToan("HD01", "B03");
+            var repoHD = new Repositories.HoaDonRepository();
+            var dsChuaTT = repoHD.GetTatCaHoaDonChuaThanhToan();
+            if (dsChuaTT.Count == 0)
+            {
+                MessageBox.Show("Hiện tại không có bàn nào đang có khách chưa thanh toán!\nBạn có thể vào 'Sơ đồ bàn' để chọn bàn cụ thể cần thanh toán.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var first = dsChuaTT.First();
+            using var frm = new frmThanhToan(first.Value.SoHD, first.Key);
             frm.ShowDialog(this);
+        }
+
+        private void mnuTachHoaDon_Click(object sender, EventArgs e)
+        {
+            var repoHD = new Repositories.HoaDonRepository();
+            var dsChuaTT = repoHD.GetTatCaHoaDonChuaThanhToan();
+            if (dsChuaTT.Count == 0)
+            {
+                MessageBox.Show("Hiện tại không có hóa đơn chưa thanh toán nào để tách!\nBạn có thể vào 'Sơ đồ bàn' để gọi món cho khách trước.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var first = dsChuaTT.First();
+            using var frm = new frmTachHoaDon(first.Value.SoHD, first.Key);
+            if (frm.ShowDialog(this) == DialogResult.OK && frm.MoThanhToanNgay && !string.IsNullOrEmpty(frm.SoHDMoi))
+            {
+                using var frmTT = new frmThanhToan(frm.SoHDMoi, frm.MaBanDich);
+                frmTT.ShowDialog(this);
+            }
+        }
+
+        private void mnuTraCuuDoanhThu_Click(object sender, EventArgs e)
+        {
+            MoFormCon<FormThongKeHoaDon>();
         }
 
         private void mnuCascade_Click(object sender, EventArgs e)

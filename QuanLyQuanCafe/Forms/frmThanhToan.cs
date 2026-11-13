@@ -242,6 +242,23 @@ namespace QuanLyQuanCafe.Forms
             }
         }
 
+        private void btnTachHD_Click(object? sender, EventArgs e)
+        {
+            using var frm = new frmTachHoaDon(soHDCurrent, maBanCurrent);
+            if (frm.ShowDialog(this) == DialogResult.OK)
+            {
+                // Tải lại chi tiết món sau khi tách
+                LoadChiTietMon();
+                TinhTien();
+
+                if (frm.MoThanhToanNgay && !string.IsNullOrEmpty(frm.SoHDMoi))
+                {
+                    using var frmTT = new frmThanhToan(frm.SoHDMoi, frm.MaBanDich);
+                    frmTT.ShowDialog(this);
+                }
+            }
+        }
+
         private void btnHuy_Click(object? sender, EventArgs e) => this.Close();
     }
 }

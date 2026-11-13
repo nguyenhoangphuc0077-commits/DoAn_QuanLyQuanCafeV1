@@ -37,6 +37,7 @@ namespace QuanLyQuanCafe.Forms
             this.colTrangThaiPhaChe = new System.Windows.Forms.ColumnHeader();
             this.pnlThaoTac = new System.Windows.Forms.Panel();
             this.btnGoiMon = new System.Windows.Forms.Button();
+            this.btnTachHD = new System.Windows.Forms.Button();
             this.btnChuyenBan = new System.Windows.Forms.Button();
             this.btnGopBan = new System.Windows.Forms.Button();
             this.btnThanhToan = new System.Windows.Forms.Button();
@@ -47,6 +48,7 @@ namespace QuanLyQuanCafe.Forms
             // Context Menu
             this.cmsBan = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miGoiMon = new System.Windows.Forms.ToolStripMenuItem();
+            this.miTachHD = new System.Windows.Forms.ToolStripMenuItem();
             this.miChuyenBan = new System.Windows.Forms.ToolStripMenuItem();
             this.miGopBan = new System.Windows.Forms.ToolStripMenuItem();
             this.miThanhToan = new System.Windows.Forms.ToolStripMenuItem();
@@ -217,6 +219,7 @@ namespace QuanLyQuanCafe.Forms
             this.pnlThaoTac.Controls.Add(this.btnThanhToan);
             this.pnlThaoTac.Controls.Add(this.btnGopBan);
             this.pnlThaoTac.Controls.Add(this.btnChuyenBan);
+            this.pnlThaoTac.Controls.Add(this.btnTachHD);
             this.pnlThaoTac.Controls.Add(this.btnGoiMon);
             this.pnlThaoTac.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlThaoTac.Location = new System.Drawing.Point(0, 453);
@@ -230,15 +233,31 @@ namespace QuanLyQuanCafe.Forms
             this.btnGoiMon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
             this.btnGoiMon.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnGoiMon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGoiMon.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnGoiMon.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnGoiMon.ForeColor = System.Drawing.Color.White;
-            this.btnGoiMon.Location = new System.Drawing.Point(6, 10);
+            this.btnGoiMon.Location = new System.Drawing.Point(4, 10);
             this.btnGoiMon.Name = "btnGoiMon";
-            this.btnGoiMon.Size = new System.Drawing.Size(95, 38);
+            this.btnGoiMon.Size = new System.Drawing.Size(78, 38);
             this.btnGoiMon.TabIndex = 0;
-            this.btnGoiMon.Text = "➕ Gọi món";
+            this.btnGoiMon.Text = "➕ Gọi";
             this.btnGoiMon.UseVisualStyleBackColor = false;
             this.btnGoiMon.Click += new System.EventHandler(this.btnGoiMon_Click);
+
+            // 
+            // btnTachHD
+            // 
+            this.btnTachHD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(31)))), ((int)(((byte)(162)))));
+            this.btnTachHD.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTachHD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTachHD.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnTachHD.ForeColor = System.Drawing.Color.White;
+            this.btnTachHD.Location = new System.Drawing.Point(86, 10);
+            this.btnTachHD.Name = "btnTachHD";
+            this.btnTachHD.Size = new System.Drawing.Size(78, 38);
+            this.btnTachHD.TabIndex = 1;
+            this.btnTachHD.Text = "✂ Tách";
+            this.btnTachHD.UseVisualStyleBackColor = false;
+            this.btnTachHD.Click += new System.EventHandler(this.btnTachHD_Click);
 
             // 
             // btnChuyenBan
@@ -248,27 +267,27 @@ namespace QuanLyQuanCafe.Forms
             this.btnChuyenBan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnChuyenBan.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnChuyenBan.ForeColor = System.Drawing.Color.White;
-            this.btnChuyenBan.Location = new System.Drawing.Point(107, 10);
+            this.btnChuyenBan.Location = new System.Drawing.Point(168, 10);
             this.btnChuyenBan.Name = "btnChuyenBan";
-            this.btnChuyenBan.Size = new System.Drawing.Size(95, 38);
-            this.btnChuyenBan.TabIndex = 1;
-            this.btnChuyenBan.Text = "🔁 Chuyển bàn";
+            this.btnChuyenBan.Size = new System.Drawing.Size(78, 38);
+            this.btnChuyenBan.TabIndex = 2;
+            this.btnChuyenBan.Text = "🔁 Đổi";
             this.btnChuyenBan.UseVisualStyleBackColor = false;
             this.btnChuyenBan.Click += new System.EventHandler(this.btnChuyenBan_Click);
 
             // 
             // btnGopBan
             // 
-            this.btnGopBan.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(31)))), ((int)(((byte)(162)))));
+            this.btnGopBan.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(101)))), ((int)(((byte)(192)))));
             this.btnGopBan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnGopBan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGopBan.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnGopBan.ForeColor = System.Drawing.Color.White;
-            this.btnGopBan.Location = new System.Drawing.Point(208, 10);
+            this.btnGopBan.Location = new System.Drawing.Point(250, 10);
             this.btnGopBan.Name = "btnGopBan";
-            this.btnGopBan.Size = new System.Drawing.Size(95, 38);
-            this.btnGopBan.TabIndex = 2;
-            this.btnGopBan.Text = "🔀 Gộp bàn";
+            this.btnGopBan.Size = new System.Drawing.Size(78, 38);
+            this.btnGopBan.TabIndex = 3;
+            this.btnGopBan.Text = "🔀 Gộp";
             this.btnGopBan.UseVisualStyleBackColor = false;
             this.btnGopBan.Click += new System.EventHandler(this.btnGopBan_Click);
 
@@ -278,13 +297,13 @@ namespace QuanLyQuanCafe.Forms
             this.btnThanhToan.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.btnThanhToan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnThanhToan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnThanhToan.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnThanhToan.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnThanhToan.ForeColor = System.Drawing.Color.White;
-            this.btnThanhToan.Location = new System.Drawing.Point(309, 10);
+            this.btnThanhToan.Location = new System.Drawing.Point(332, 10);
             this.btnThanhToan.Name = "btnThanhToan";
-            this.btnThanhToan.Size = new System.Drawing.Size(108, 38);
-            this.btnThanhToan.TabIndex = 3;
-            this.btnThanhToan.Text = "💳 Thanh toán";
+            this.btnThanhToan.Size = new System.Drawing.Size(90, 38);
+            this.btnThanhToan.TabIndex = 4;
+            this.btnThanhToan.Text = "💳 T.Toán";
             this.btnThanhToan.UseVisualStyleBackColor = false;
             this.btnThanhToan.Click += new System.EventHandler(this.btnThanhToan_Click);
 
@@ -304,11 +323,12 @@ namespace QuanLyQuanCafe.Forms
             // 
             this.cmsBan.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miGoiMon,
+            this.miTachHD,
             this.miChuyenBan,
             this.miGopBan,
             this.miThanhToan});
             this.cmsBan.Name = "cmsBan";
-            this.cmsBan.Size = new System.Drawing.Size(188, 92);
+            this.cmsBan.Size = new System.Drawing.Size(188, 114);
 
             // 
             // miGoiMon
@@ -317,6 +337,14 @@ namespace QuanLyQuanCafe.Forms
             this.miGoiMon.Size = new System.Drawing.Size(187, 22);
             this.miGoiMon.Text = "Gọi món";
             this.miGoiMon.Click += new System.EventHandler(this.miGoiMon_Click);
+
+            // 
+            // miTachHD
+            // 
+            this.miTachHD.Name = "miTachHD";
+            this.miTachHD.Size = new System.Drawing.Size(187, 22);
+            this.miTachHD.Text = "Tách hóa đơn";
+            this.miTachHD.Click += new System.EventHandler(this.miTachHD_Click);
 
             // 
             // miChuyenBan
@@ -383,6 +411,7 @@ namespace QuanLyQuanCafe.Forms
         private System.Windows.Forms.ColumnHeader colTrangThaiPhaChe;
         private System.Windows.Forms.Panel pnlThaoTac;
         private System.Windows.Forms.Button btnGoiMon;
+        private System.Windows.Forms.Button btnTachHD;
         private System.Windows.Forms.Button btnChuyenBan;
         private System.Windows.Forms.Button btnGopBan;
         private System.Windows.Forms.Button btnThanhToan;
@@ -391,6 +420,7 @@ namespace QuanLyQuanCafe.Forms
 
         private System.Windows.Forms.ContextMenuStrip cmsBan;
         private System.Windows.Forms.ToolStripMenuItem miGoiMon;
+        private System.Windows.Forms.ToolStripMenuItem miTachHD;
         private System.Windows.Forms.ToolStripMenuItem miChuyenBan;
         private System.Windows.Forms.ToolStripMenuItem miGopBan;
         private System.Windows.Forms.ToolStripMenuItem miThanhToan;

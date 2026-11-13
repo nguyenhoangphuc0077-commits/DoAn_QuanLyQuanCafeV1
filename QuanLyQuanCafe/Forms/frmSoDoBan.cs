@@ -115,10 +115,12 @@ namespace QuanLyQuanCafe.Forms
                 .ToList();
 
             int startY = 12;
-            int btnWidth = 110;
-            int btnHeight = 80;
+            int btnWidth = 115;
+            int btnHeight = 85;
             int gapX = 14;
             int gapY = 12;
+
+            var hoaDonDict = _repoHD.GetTatCaHoaDonChuaThanhToan();
 
             foreach (var group in nhomKhuVuc)
             {
@@ -148,9 +150,17 @@ namespace QuanLyQuanCafe.Forms
                     bool isSelected = _banDangChon != null && _banDangChon.Ma == ban.Ma;
                     bool coKhach = ban.TrangThai == "Có khách";
 
+                    string timerText = "";
+                    if (coKhach && hoaDonDict.TryGetValue(ban.Ma, out var hd) && hd != null)
+                    {
+                        TimeSpan thoiGianDaNgoi = DateTime.Now - hd.GioVao;
+                        if (thoiGianDaNgoi.TotalSeconds < 0) thoiGianDaNgoi = TimeSpan.Zero;
+                        timerText = $"\n⏱ {(int)thoiGianDaNgoi.TotalHours:00}:{thoiGianDaNgoi.Minutes:00}:{thoiGianDaNgoi.Seconds:00}";
+                    }
+
                     Button btn = new Button
                     {
-                        Text = $"{ban.Ten}\n[{ban.KhuVuc}]\n{ban.TrangThai}",
+                        Text = coKhach ? $"{ban.Ten}\n{ban.TrangThai}{timerText}" : $"{ban.Ten}\n{ban.TrangThai}",
                         Width = btnWidth,
                         Height = btnHeight,
                         Left = currentX,
@@ -548,6 +558,56 @@ namespace QuanLyQuanCafe.Forms
             }
         }
 
+        private void btnTachHD_Click(object? sender, EventArgs e)
+        {
+            ThucHienTachHoaDon();
+        }
+
+        private void miTachHD_Click(object? sender, EventArgs e)
+        {
+            ThucHienTachHoaDon();
+        }
+
+        private void ThucHienTachHoaDon()
+        {
+            if (_banDangChon == null || _banDangChon.TrangThai == "Trống")
+            {
+                MessageBox.Show("Chỉ có thể tách hóa đơn cho bàn đang có khách!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var hd = _repoHD.GetHoaDonChuaThanhToan(_banDangChon.Ma);
+            if (hd == null)
+            {
+                MessageBox.Show("Không tìm thấy hóa đơn chưa thanh toán của bàn này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            using var frm = new frmTachHoaDon(hd.SoHD, _banDangChon.Ma);
+            if (frm.ShowDialog(this) == DialogResult.OK)
+            {
+                DocFileBan();
+                CapNhatThongKe();
+                string? curFilter = LayKhuVucFilterTuComboBox();
+                VeSoDoBan(curFilter);
+
+                var banCapNhat = _dsBan.FirstOrDefault(b => b.Ma == _banDangChon.Ma);
+                if (banCapNhat != null) ChonBan(banCapNhat);
+
+                if (frm.MoThanhToanNgay && !string.IsNullOrEmpty(frm.SoHDMoi))
+                {
+                    using var frmTT = new frmThanhToan(frm.SoHDMoi, frm.MaBanDich);
+                    if (frmTT.ShowDialog(this) == DialogResult.OK)
+                    {
+                        DocFileBan();
+                        CapNhatThongKe();
+                        VeSoDoBan(curFilter);
+                        if (banCapNhat != null) ChonBan(banCapNhat);
+                    }
+                }
+            }
+        }
+
         private void tmrCode_Tick(object? sender, EventArgs e)
         {
             this.Text = "Sơ đồ bàn - Quản lý Quán Cà Phê - " + DateTime.Now.ToString("HH:mm:ss");
@@ -565,16 +625,16 @@ namespace QuanLyQuanCafe.Forms
                             TimeSpan thoiGianDaNgoi = DateTime.Now - hd.GioVao;
                             if (thoiGianDaNgoi.TotalSeconds < 0) thoiGianDaNgoi = TimeSpan.Zero;
 
-                            btn.Text = $"{ban.Ten}\n[{ban.KhuVuc}]\n{ban.TrangThai}\n{(int)thoiGianDaNgoi.TotalHours:00}:{thoiGianDaNgoi.Minutes:00}:{thoiGianDaNgoi.Seconds:00}";
+                            btn.Text = $"{ban.Ten}\n{ban.TrangThai}\n⏱ {(int)thoiGianDaNgoi.TotalHours:00}:{thoiGianDaNgoi.Minutes:00}:{thoiGianDaNgoi.Seconds:00}";
                         }
                         else
                         {
-                            btn.Text = $"{ban.Ten}\n[{ban.KhuVuc}]\n{ban.TrangThai}";
+                            btn.Text = $"{ban.Ten}\n{ban.TrangThai}";
                         }
                     }
                     else
                     {
-                        btn.Text = $"{ban.Ten}\n[{ban.KhuVuc}]\n{ban.TrangThai}";
+                        btn.Text = $"{ban.Ten}\n{ban.TrangThai}";
                     }
                 }
             }
