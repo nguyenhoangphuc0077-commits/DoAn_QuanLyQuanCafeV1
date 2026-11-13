@@ -30,6 +30,8 @@ namespace QuanLyQuanCafe.Forms
             this.nudSoLuong = new System.Windows.Forms.NumericUpDown();
             this.lblDonGiaText = new System.Windows.Forms.Label();
             this.lblDonGia = new System.Windows.Forms.Label();
+            this.lblGhiChu = new System.Windows.Forms.Label();
+            this.txtGhiChu = new System.Windows.Forms.TextBox();
             this.lblThanhTienText = new System.Windows.Forms.Label();
             this.lblThanhTien = new System.Windows.Forms.Label();
             this.btnXacNhan = new System.Windows.Forms.Button();
@@ -65,6 +67,8 @@ namespace QuanLyQuanCafe.Forms
             this.grpThongTin.Controls.Add(this.nudSoLuong);
             this.grpThongTin.Controls.Add(this.lblDonGiaText);
             this.grpThongTin.Controls.Add(this.lblDonGia);
+            this.grpThongTin.Controls.Add(this.lblGhiChu);
+            this.grpThongTin.Controls.Add(this.txtGhiChu);
             this.grpThongTin.Controls.Add(this.lblThanhTienText);
             this.grpThongTin.Controls.Add(this.lblThanhTien);
             this.grpThongTin.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -221,24 +225,42 @@ namespace QuanLyQuanCafe.Forms
             this.lblDonGia.TabIndex = 9;
             this.lblDonGia.Text = "0 VNĐ";
             // 
+            // lblGhiChu
+            // 
+            this.lblGhiChu.AutoSize = true;
+            this.lblGhiChu.Location = new System.Drawing.Point(20, 278);
+            this.lblGhiChu.Name = "lblGhiChu";
+            this.lblGhiChu.Size = new System.Drawing.Size(55, 17);
+            this.lblGhiChu.TabIndex = 10;
+            this.lblGhiChu.Text = "Ghi chú:";
+            // 
+            // txtGhiChu
+            // 
+            this.txtGhiChu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtGhiChu.Location = new System.Drawing.Point(105, 275);
+            this.txtGhiChu.Name = "txtGhiChu";
+            this.txtGhiChu.PlaceholderText = "Ví dụ: Ít đường, nhiều đá, uống nóng...";
+            this.txtGhiChu.Size = new System.Drawing.Size(465, 25);
+            this.txtGhiChu.TabIndex = 11;
+            // 
             // lblThanhTienText
             // 
             this.lblThanhTienText.AutoSize = true;
             this.lblThanhTienText.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblThanhTienText.Location = new System.Drawing.Point(20, 305);
+            this.lblThanhTienText.Location = new System.Drawing.Point(20, 314);
             this.lblThanhTienText.Name = "lblThanhTienText";
             this.lblThanhTienText.Size = new System.Drawing.Size(88, 20);
-            this.lblThanhTienText.TabIndex = 10;
+            this.lblThanhTienText.TabIndex = 12;
             this.lblThanhTienText.Text = "Thành tiền:";
             // 
             // lblThanhTien
             // 
             this.lblThanhTien.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblThanhTien.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.lblThanhTien.Location = new System.Drawing.Point(115, 300);
+            this.lblThanhTien.Location = new System.Drawing.Point(115, 309);
             this.lblThanhTien.Name = "lblThanhTien";
             this.lblThanhTien.Size = new System.Drawing.Size(450, 32);
-            this.lblThanhTien.TabIndex = 11;
+            this.lblThanhTien.TabIndex = 13;
             this.lblThanhTien.Text = "0 VNĐ";
             // 
             // btnXacNhan
@@ -315,6 +337,8 @@ namespace QuanLyQuanCafe.Forms
         private System.Windows.Forms.NumericUpDown nudSoLuong;
         private System.Windows.Forms.Label lblDonGiaText;
         private System.Windows.Forms.Label lblDonGia;
+        private System.Windows.Forms.Label lblGhiChu;
+        private System.Windows.Forms.TextBox txtGhiChu;
         private System.Windows.Forms.Label lblThanhTienText;
         private System.Windows.Forms.Label lblThanhTien;
         private System.Windows.Forms.Button btnXacNhan;

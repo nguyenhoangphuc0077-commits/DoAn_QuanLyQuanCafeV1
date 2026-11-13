@@ -19,6 +19,7 @@ namespace QuanLyQuanCafe.Forms
         public int SoLuongDuocChon { get; private set; } = 1;
         public decimal DonGiaDuocChon { get; private set; }
         public decimal ThanhTienDuocChon => SoLuongDuocChon * DonGiaDuocChon;
+        public string GhiChuDuocChon { get; private set; } = string.Empty;
 
         public frmGoiMon(string tenBan)
         {
@@ -180,6 +181,7 @@ namespace QuanLyQuanCafe.Forms
             SizeDuocChon = rdoSizeS.Checked ? "S" : (rdoSizeL.Checked ? "L" : "M");
             SoLuongDuocChon = (int)nudSoLuong.Value;
             DonGiaDuocChon = mon.LayGiaTheoSize(SizeDuocChon);
+            GhiChuDuocChon = txtGhiChu.Text.Trim();
 
             this.DialogResult = DialogResult.OK;
             this.Close();

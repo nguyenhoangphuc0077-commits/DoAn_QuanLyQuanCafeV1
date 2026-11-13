@@ -27,7 +27,14 @@ namespace QuanLyQuanCafe.Forms
             DataService.Instance.KhoiTaoDuLieu();
             DocFileBan();
             LoadComboBox();
+            CapNhatThongKe();
             VeSoDoBan(null);
+
+            // Mặc định chọn bàn đầu tiên nếu có
+            if (_dsBan.Count > 0)
+            {
+                ChonBan(_dsBan[0]);
+            }
 
             tmrCode.Interval = 1000;
             tmrCode.Tick -= tmrCode_Tick;
@@ -42,68 +49,168 @@ namespace QuanLyQuanCafe.Forms
 
         private void LoadComboBox()
         {
-            cboKhuVuc.Items.Clear();
-            cboKhuVuc.Items.Add("Tất cả");
-            var khuVucs = new HashSet<string>();
-            foreach (var b in _dsBan)
-            {
-                if (!string.IsNullOrWhiteSpace(b.KhuVuc))
-                    khuVucs.Add(b.KhuVuc);
-            }
-            foreach (var kv in khuVucs) cboKhuVuc.Items.Add(kv);
-            cboKhuVuc.SelectedIndex = 0;
-
             cboKhuVuc.SelectedIndexChanged -= CboKhuVuc_SelectedIndexChanged;
+            cboKhuVuc.Items.Clear();
+            cboKhuVuc.Items.Add("Tất cả khu vực");
+
+            var khuVucs = _dsBan
+                .Where(b => !string.IsNullOrWhiteSpace(b.KhuVuc))
+                .Select(b => b.KhuVuc)
+                .Distinct()
+                .ToList();
+
+            foreach (var kv in khuVucs)
+            {
+                int count = _dsBan.Count(b => b.KhuVuc == kv);
+                cboKhuVuc.Items.Add($"{kv} ({count} bàn)");
+            }
+
+            cboKhuVuc.SelectedIndex = 0;
             cboKhuVuc.SelectedIndexChanged += CboKhuVuc_SelectedIndexChanged;
+        }
+
+        private string? LayKhuVucFilterTuComboBox()
+        {
+            if (cboKhuVuc.SelectedIndex <= 0) return null;
+            string sel = cboKhuVuc.SelectedItem?.ToString() ?? "";
+            int idx = sel.IndexOf(" (");
+            return idx > 0 ? sel.Substring(0, idx).Trim() : sel.Trim();
         }
 
         private void CboKhuVuc_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            string? filter = cboKhuVuc.SelectedItem?.ToString();
-            VeSoDoBan(filter == "Tất cả" ? null : filter);
+            string? filter = LayKhuVucFilterTuComboBox();
+            VeSoDoBan(filter);
+        }
+
+        private void CapNhatThongKe()
+        {
+            int tong = _dsBan.Count;
+            int coKhach = _dsBan.Count(b => b.TrangThai == "Có khách");
+            int trong = tong - coKhach;
+            lblThongKe.Text = $"Tổng số: {tong} bàn  |  🟢 Trống: {trong} bàn  |  🔴 Có khách: {coKhach} bàn";
+        }
+
+        private void btnLamMoi_Click(object? sender, EventArgs e)
+        {
+            DocFileBan();
+            CapNhatThongKe();
+            string? filter = LayKhuVucFilterTuComboBox();
+            VeSoDoBan(filter);
+            if (_banDangChon != null)
+            {
+                var capNhat = _dsBan.FirstOrDefault(b => b.Ma == _banDangChon.Ma);
+                if (capNhat != null) ChonBan(capNhat);
+            }
         }
 
         private void VeSoDoBan(string? khuVucFilter)
         {
+            pnlSoDo.SuspendLayout();
             pnlSoDo.Controls.Clear();
-            int x = 10, y = 10;
 
-            foreach (var ban in _dsBan)
+            var nhomKhuVuc = _dsBan
+                .Where(b => khuVucFilter == null || b.KhuVuc == khuVucFilter)
+                .GroupBy(b => b.KhuVuc)
+                .ToList();
+
+            int startY = 12;
+            int btnWidth = 110;
+            int btnHeight = 80;
+            int gapX = 14;
+            int gapY = 12;
+
+            foreach (var group in nhomKhuVuc)
             {
-                if (khuVucFilter != null && ban.KhuVuc != khuVucFilter) continue;
+                string tenKhuVuc = group.Key;
+                var dsBanTrongKhuVuc = group.ToList();
 
-                Button btn = new Button
+                // Tạo tiêu đề phân chia khu vực trực quan
+                Label lblHeaderKhuVuc = new Label
                 {
-                    Text = $"{ban.Ten}\n{ban.TrangThai}",
-                    Width = 110,
-                    Height = 75,
-                    Left = x,
-                    Top = y,
-                    Tag = ban,
-                    Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                    BackColor = ban.TrangThai == "Trống" ? Color.LightGreen : Color.LightCoral
+                    Text = $"🏢 KHU VỰC: {tenKhuVuc.ToUpper()} ({dsBanTrongKhuVuc.Count} BÀN)",
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(93, 64, 55),
+                    BackColor = Color.FromArgb(238, 238, 238),
+                    Location = new Point(14, startY),
+                    Size = new Size(Math.Max(500, pnlSoDo.Width - 35), 28),
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Padding = new Padding(8, 0, 0, 0)
                 };
+                pnlSoDo.Controls.Add(lblHeaderKhuVuc);
 
-                btn.Click += BtnBan_Click;
-                btn.DoubleClick += BtnBan_DoubleClick;
-                btn.MouseDown += BtnBan_MouseDown;
-                pnlSoDo.Controls.Add(btn);
+                startY += 36;
+                int currentX = 14;
+                int rowY = startY;
 
-                x += 120;
-                if (x > pnlSoDo.Width - 110)
+                foreach (var ban in dsBanTrongKhuVuc)
                 {
-                    x = 10;
-                    y += 85;
+                    bool isSelected = _banDangChon != null && _banDangChon.Ma == ban.Ma;
+                    bool coKhach = ban.TrangThai == "Có khách";
+
+                    Button btn = new Button
+                    {
+                        Text = $"{ban.Ten}\n[{ban.KhuVuc}]\n{ban.TrangThai}",
+                        Width = btnWidth,
+                        Height = btnHeight,
+                        Left = currentX,
+                        Top = rowY,
+                        Tag = ban,
+                        Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                        FlatStyle = FlatStyle.Flat,
+                        Cursor = Cursors.Hand
+                    };
+
+                    btn.FlatAppearance.BorderSize = isSelected ? 3 : 1;
+                    btn.FlatAppearance.BorderColor = isSelected ? Color.FromArgb(25, 118, 210) : (coKhach ? Color.FromArgb(229, 115, 115) : Color.FromArgb(129, 199, 132));
+                    btn.BackColor = coKhach ? Color.FromArgb(255, 235, 238) : Color.FromArgb(232, 245, 233);
+                    btn.ForeColor = coKhach ? Color.FromArgb(183, 28, 28) : Color.FromArgb(27, 94, 32);
+
+                    btn.Click += BtnBan_Click;
+                    btn.DoubleClick += BtnBan_DoubleClick;
+                    btn.MouseDown += BtnBan_MouseDown;
+
+                    pnlSoDo.Controls.Add(btn);
+
+                    currentX += btnWidth + gapX;
+                    if (currentX + btnWidth > pnlSoDo.Width - 20)
+                    {
+                        currentX = 14;
+                        rowY += btnHeight + gapY;
+                    }
+                }
+
+                startY = rowY + btnHeight + 20;
+            }
+
+            pnlSoDo.ResumeLayout();
+        }
+
+        private void ChonBan(Ban ban)
+        {
+            _banDangChon = ban;
+            lblTieuDeBan.Text = $"CHI TIẾT: {ban.Ten.ToUpper()} [{ban.KhuVuc.ToUpper()}] - {ban.TrangThai.ToUpper()}";
+
+            // Cập nhật viền chọn trên các nút bàn
+            foreach (Control c in pnlSoDo.Controls)
+            {
+                if (c is Button btn && btn.Tag is Ban b)
+                {
+                    bool isSelected = b.Ma == ban.Ma;
+                    bool coKhach = b.TrangThai == "Có khách";
+                    btn.FlatAppearance.BorderSize = isSelected ? 3 : 1;
+                    btn.FlatAppearance.BorderColor = isSelected ? Color.FromArgb(25, 118, 210) : (coKhach ? Color.FromArgb(229, 115, 115) : Color.FromArgb(129, 199, 132));
                 }
             }
+
+            HienThiChiTietMon(ban.Ma);
         }
 
         private void BtnBan_MouseDown(object? sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && sender is Button btn && btn.Tag is Ban ban)
             {
-                _banDangChon = ban;
-                HienThiChiTietMon(ban.Ma);
+                ChonBan(ban);
                 cmsBan.Show(btn, e.Location);
             }
         }
@@ -111,14 +218,13 @@ namespace QuanLyQuanCafe.Forms
         private void BtnBan_Click(object? sender, EventArgs e)
         {
             if (sender is not Button btn || btn.Tag is not Ban ban) return;
-            _banDangChon = ban;
-            HienThiChiTietMon(ban.Ma);
+            ChonBan(ban);
         }
 
         private void BtnBan_DoubleClick(object? sender, EventArgs e)
         {
             if (sender is not Button btn || btn.Tag is not Ban ban) return;
-            _banDangChon = ban;
+            ChonBan(ban);
             ThucHienGoiMon();
         }
 
@@ -129,20 +235,137 @@ namespace QuanLyQuanCafe.Forms
             if (ban == null || ban.TrangThai == "Trống") return;
 
             var dsMon = _repoHD.GetChiTietByMaBan(maBan);
+
+            // Nạp trạng thái từ Màn hình Pha chế (KDS)
+            DataService.Instance.NapDanhSachDonPhaChe();
+            var dsPhaCheCuaBan = DataService.Instance.DanhSachDonPhaChe
+                .Where(d => d.MaBan == maBan)
+                .ToList();
+
             foreach (var mon in dsMon)
             {
                 string tenHienThi = DataService.Instance.DanhSachMon
                     .FirstOrDefault(m => string.Equals(m.Ma, mon.MaMon, StringComparison.OrdinalIgnoreCase))?.Ten ?? mon.MaMon;
 
+                // Tìm trạng thái pha chế tương ứng từ KDS
+                string trangThaiPhaChe = "Hoàn thành";
+                var donPC = dsPhaCheCuaBan.FirstOrDefault(d => d.MaMon == mon.MaMon && d.Size == mon.Size);
+                if (donPC != null)
+                {
+                    trangThaiPhaChe = donPC.TrangThai;
+                }
+
                 ListViewItem item = new ListViewItem(tenHienThi);
                 item.SubItems.Add(mon.Size);
                 item.SubItems.Add(mon.SoLuong.ToString());
-                item.SubItems.Add(mon.ThanhTien.ToString("N0"));
+                item.SubItems.Add(mon.ThanhTien.ToString("N0") + " đ");
+                item.SubItems.Add(trangThaiPhaChe);
+
+                // Màu sắc trực quan theo trạng thái pha chế
+                if (trangThaiPhaChe == "Chờ pha chế")
+                {
+                    item.ForeColor = Color.FromArgb(230, 81, 0); // Cam đậm
+                }
+                else if (trangThaiPhaChe == "Đang pha chế")
+                {
+                    item.ForeColor = Color.FromArgb(21, 101, 192); // Xanh dương
+                    item.Font = new Font(lvChiTiet.Font, FontStyle.Bold);
+                }
+                else if (trangThaiPhaChe == "Hoàn thành")
+                {
+                    item.ForeColor = Color.FromArgb(46, 125, 50); // Xanh lá
+                }
+
                 lvChiTiet.Items.Add(item);
             }
         }
 
+        private void btnGoiMon_Click(object? sender, EventArgs e)
+        {
+            ThucHienGoiMon();
+        }
+
+        private void miGoiMon_Click(object? sender, EventArgs e)
+        {
+            ThucHienGoiMon();
+        }
+
+        private void ThucHienGoiMon()
+        {
+            if (_banDangChon == null)
+            {
+                MessageBox.Show("Vui lòng click chọn một bàn trước khi gọi món!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using var frm = new frmGoiMon(_banDangChon.Ten);
+            if (frm.ShowDialog(this) == DialogResult.OK && frm.MonDuocChon != null)
+            {
+                string maMon = frm.MonDuocChon.Ma;
+                string size = frm.SizeDuocChon;
+                int soLuong = frm.SoLuongDuocChon;
+                decimal donGia = frm.DonGiaDuocChon;
+                string ghiChu = frm.GhiChuDuocChon;
+
+                var hd = _repoHD.GetHoaDonChuaThanhToan(_banDangChon.Ma);
+                if (hd == null)
+                {
+                    string newSoHD = "HD" + DateTime.Now.ToString("ddHHmmss");
+                    _repoHD.TaoHoaDonMoi(newSoHD, _banDangChon.Ma);
+                    _repoBan.CapNhatTrangThai(_banDangChon.Ma, "Có khách");
+                    hd = new HoaDon { SoHD = newSoHD, MaBan = _banDangChon.Ma, GioVao = DateTime.Now };
+                }
+
+                _repoHD.ThemChiTietHoaDon(hd.SoHD, maMon, size, soLuong, donGia);
+
+                // === ĐỒNG BỘ TỰ ĐỘNG SANG MÀN HÌNH PHA CHẾ (KDS) ===
+                DongBoDonPhaCheMoi(_banDangChon.Ma, _banDangChon.Ten, maMon, frm.MonDuocChon.Ten, size, soLuong, ghiChu);
+
+                MessageBox.Show($"Đã gọi món {frm.MonDuocChon.Ten} (Size {size}, SL: {soLuong}) cho {_banDangChon.Ten}!\n\nĐơn đã được tự động đồng bộ sang Màn hình Quầy Pha Chế (KDS).", 
+                    "Gọi món thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                DocFileBan();
+                CapNhatThongKe();
+                string? curFilter = LayKhuVucFilterTuComboBox();
+                VeSoDoBan(curFilter);
+
+                var banMoi = _dsBan.FirstOrDefault(b => b.Ma == _banDangChon.Ma);
+                if (banMoi != null) ChonBan(banMoi);
+            }
+        }
+
+        private void DongBoDonPhaCheMoi(string maBan, string tenBan, string maMon, string tenMon, string size, int soLuong, string ghiChu)
+        {
+            try
+            {
+                DataService.Instance.NapDanhSachDonPhaChe();
+                string maOrder = "ORD" + DateTime.Now.ToString("yyMMddHHmmssfff");
+                var donMoi = new DonPhaChe(maOrder, maBan, tenBan, maMon, tenMon, size, soLuong, ghiChu)
+                {
+                    ThoiGianGoi = DateTime.Now,
+                    TrangThai = "Chờ pha chế"
+                };
+
+                DataService.Instance.DanhSachDonPhaChe.Insert(0, donMoi);
+                DataService.Instance.LuuDanhSachDonPhaChe();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Lỗi đồng bộ KDS: " + ex.Message);
+            }
+        }
+
+        private void btnChuyenBan_Click(object? sender, EventArgs e)
+        {
+            ThucHienChuyenBan();
+        }
+
         private void miChuyenBan_Click(object? sender, EventArgs e)
+        {
+            ThucHienChuyenBan();
+        }
+
+        private void ThucHienChuyenBan()
         {
             if (_banDangChon == null || _banDangChon.TrangThai == "Trống")
             {
@@ -169,11 +392,18 @@ namespace QuanLyQuanCafe.Forms
                     _repoBan.CapNhatTrangThai(_banDangChon.Ma, "Trống");
                     _repoBan.CapNhatTrangThai(banDich.Ma, "Có khách");
 
-                    MessageBox.Show($"Đã chuyển {_banDangChon.Ten} sang {banDich.Ten}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Đồng bộ chuyển cả đơn pha chế chưa xong sang bàn đích
+                    CapNhatDonPhaCheSangBanMoi(_banDangChon.Ma, banDich.Ma, banDich.Ten);
+
+                    MessageBox.Show($"Đã chuyển {_banDangChon.Ten} sang {banDich.Ten}!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
                     DocFileBan();
-                    string? curFilter = cboKhuVuc.SelectedItem?.ToString();
-                    VeSoDoBan(curFilter == "Tất cả" ? null : curFilter);
-                    lvChiTiet.Items.Clear();
+                    CapNhatThongKe();
+                    string? curFilter = LayKhuVucFilterTuComboBox();
+                    VeSoDoBan(curFilter);
+
+                    var banMoi = _dsBan.FirstOrDefault(b => b.Ma == banDich.Ma);
+                    if (banMoi != null) ChonBan(banMoi);
                 }
                 else
                 {
@@ -182,7 +412,17 @@ namespace QuanLyQuanCafe.Forms
             }
         }
 
+        private void btnGopBan_Click(object? sender, EventArgs e)
+        {
+            ThucHienGopBan();
+        }
+
         private void miGopBan_Click(object? sender, EventArgs e)
+        {
+            ThucHienGopBan();
+        }
+
+        private void ThucHienGopBan()
         {
             if (_banDangChon == null || _banDangChon.TrangThai == "Trống")
             {
@@ -209,11 +449,18 @@ namespace QuanLyQuanCafe.Forms
                     _repoHD.DoiMaBanHoaDon(hdNguon.SoHD, banDich.Ma);
                     _repoBan.CapNhatTrangThai(_banDangChon.Ma, "Trống");
 
-                    MessageBox.Show($"Đã gộp {_banDangChon.Ten} vào {banDich.Ten}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Đồng bộ chuyển đơn pha chế chưa xong sang bàn đích
+                    CapNhatDonPhaCheSangBanMoi(_banDangChon.Ma, banDich.Ma, banDich.Ten);
+
+                    MessageBox.Show($"Đã gộp {_banDangChon.Ten} vào {banDich.Ten}!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
                     DocFileBan();
-                    string? curFilter = cboKhuVuc.SelectedItem?.ToString();
-                    VeSoDoBan(curFilter == "Tất cả" ? null : curFilter);
-                    lvChiTiet.Items.Clear();
+                    CapNhatThongKe();
+                    string? curFilter = LayKhuVucFilterTuComboBox();
+                    VeSoDoBan(curFilter);
+
+                    var banMoi = _dsBan.FirstOrDefault(b => b.Ma == banDich.Ma);
+                    if (banMoi != null) ChonBan(banMoi);
                 }
                 else
                 {
@@ -222,49 +469,43 @@ namespace QuanLyQuanCafe.Forms
             }
         }
 
-        private void miGoiMon_Click(object? sender, EventArgs e)
+        private void CapNhatDonPhaCheSangBanMoi(string maBanCu, string maBanMoi, string tenBanMoi)
         {
-            ThucHienGoiMon();
+            try
+            {
+                DataService.Instance.NapDanhSachDonPhaChe();
+                bool coThayDoi = false;
+                foreach (var don in DataService.Instance.DanhSachDonPhaChe)
+                {
+                    if (don.MaBan == maBanCu && don.TrangThai != "Hoàn thành")
+                    {
+                        don.MaBan = maBanMoi;
+                        don.TenBan = tenBanMoi;
+                        coThayDoi = true;
+                    }
+                }
+                if (coThayDoi)
+                {
+                    DataService.Instance.LuuDanhSachDonPhaChe();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Lỗi cập nhật KDS chuyển bàn: " + ex.Message);
+            }
         }
 
-        private void ThucHienGoiMon()
+        private void btnThanhToan_Click(object? sender, EventArgs e)
         {
-            if (_banDangChon == null)
-            {
-                MessageBox.Show("Vui lòng click chọn một bàn trước khi gọi món!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            using var frm = new frmGoiMon(_banDangChon.Ten);
-            if (frm.ShowDialog(this) == DialogResult.OK && frm.MonDuocChon != null)
-            {
-                string maMon = frm.MonDuocChon.Ma;
-                string size = frm.SizeDuocChon;
-                int soLuong = frm.SoLuongDuocChon;
-                decimal donGia = frm.DonGiaDuocChon;
-
-                var hd = _repoHD.GetHoaDonChuaThanhToan(_banDangChon.Ma);
-                if (hd == null)
-                {
-                    string newSoHD = "HD" + DateTime.Now.ToString("ddHHmmss");
-                    _repoHD.TaoHoaDonMoi(newSoHD, _banDangChon.Ma);
-                    _repoBan.CapNhatTrangThai(_banDangChon.Ma, "Có khách");
-                    hd = new HoaDon { SoHD = newSoHD, MaBan = _banDangChon.Ma, GioVao = DateTime.Now };
-                }
-
-                _repoHD.ThemChiTietHoaDon(hd.SoHD, maMon, size, soLuong, donGia);
-
-                MessageBox.Show($"Đã thêm món {frm.MonDuocChon.Ten} (Size {size}, SL: {soLuong}) vào {_banDangChon.Ten}!", "Gọi món thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                DocFileBan();
-                string? curFilter = cboKhuVuc.SelectedItem?.ToString();
-                VeSoDoBan(curFilter == "Tất cả" ? null : curFilter);
-
-                HienThiChiTietMon(_banDangChon.Ma);
-            }
+            ThucHienThanhToan();
         }
 
         private void miThanhToan_Click(object? sender, EventArgs e)
+        {
+            ThucHienThanhToan();
+        }
+
+        private void ThucHienThanhToan()
         {
             if (_banDangChon == null || _banDangChon.TrangThai == "Trống")
             {
@@ -282,10 +523,28 @@ namespace QuanLyQuanCafe.Forms
             using var frm = new frmThanhToan(hd.SoHD, _banDangChon.Ma);
             if (frm.ShowDialog(this) == DialogResult.OK)
             {
+                // Khi thanh toán xong, các đơn pha chế còn lại của bàn này đánh dấu hoàn tất
+                try
+                {
+                    DataService.Instance.NapDanhSachDonPhaChe();
+                    foreach (var don in DataService.Instance.DanhSachDonPhaChe)
+                    {
+                        if (don.MaBan == _banDangChon.Ma && don.TrangThai != "Hoàn thành")
+                        {
+                            don.TrangThai = "Hoàn thành";
+                        }
+                    }
+                    DataService.Instance.LuuDanhSachDonPhaChe();
+                }
+                catch { }
+
                 DocFileBan();
-                string? curFilter = cboKhuVuc.SelectedItem?.ToString();
-                VeSoDoBan(curFilter == "Tất cả" ? null : curFilter);
-                lvChiTiet.Items.Clear();
+                CapNhatThongKe();
+                string? curFilter = LayKhuVucFilterTuComboBox();
+                VeSoDoBan(curFilter);
+
+                var banCapNhat = _dsBan.FirstOrDefault(b => b.Ma == _banDangChon.Ma);
+                if (banCapNhat != null) ChonBan(banCapNhat);
             }
         }
 
@@ -306,16 +565,16 @@ namespace QuanLyQuanCafe.Forms
                             TimeSpan thoiGianDaNgoi = DateTime.Now - hd.GioVao;
                             if (thoiGianDaNgoi.TotalSeconds < 0) thoiGianDaNgoi = TimeSpan.Zero;
 
-                            btn.Text = $"{ban.Ten}\n{ban.TrangThai}\n{(int)thoiGianDaNgoi.TotalHours:00}:{thoiGianDaNgoi.Minutes:00}:{thoiGianDaNgoi.Seconds:00}";
+                            btn.Text = $"{ban.Ten}\n[{ban.KhuVuc}]\n{ban.TrangThai}\n{(int)thoiGianDaNgoi.TotalHours:00}:{thoiGianDaNgoi.Minutes:00}:{thoiGianDaNgoi.Seconds:00}";
                         }
                         else
                         {
-                            btn.Text = $"{ban.Ten}\n{ban.TrangThai}";
+                            btn.Text = $"{ban.Ten}\n[{ban.KhuVuc}]\n{ban.TrangThai}";
                         }
                     }
                     else
                     {
-                        btn.Text = $"{ban.Ten}\n{ban.TrangThai}";
+                        btn.Text = $"{ban.Ten}\n[{ban.KhuVuc}]\n{ban.TrangThai}";
                     }
                 }
             }

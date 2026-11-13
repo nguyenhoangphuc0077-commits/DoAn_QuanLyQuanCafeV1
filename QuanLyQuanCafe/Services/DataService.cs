@@ -157,12 +157,22 @@ namespace QuanLyQuanCafe.Services
             {
                 File.WriteAllLines(banPath, new[]
                 {
-                    "B01;Bàn 1;Tầng 1;Trống",
-                    "B02;Bàn 2;Tầng 1;Có khách",
-                    "B03;Bàn 3;Tầng 1;Có khách",
-                    "B04;Bàn 4;Tầng 2;Trống",
-                    "B05;Bàn 5;Sân vườn;Có khách",
-                    "B06;Bàn 6;Sân vườn;Trống"
+                    "Ma;Ten;KhuVuc;TrangThai",
+                    "B01;Bàn 1;Tầng trệt;Trống",
+                    "B02;Bàn 2;Tầng trệt;Trống",
+                    "B03;Bàn 3;Tầng trệt;Có khách",
+                    "B04;Bàn 4;Tầng trệt;Trống",
+                    "B05;Bàn 5;Tầng trệt;Có khách",
+                    "B06;Bàn 6;Lầu 1;Có khách",
+                    "B07;Bàn 7;Lầu 1;Trống",
+                    "B08;Bàn 8;Lầu 1;Trống",
+                    "B09;Bàn 9;Lầu 1;Trống",
+                    "B10;Bàn 10;Lầu 1;Trống",
+                    "B11;Bàn 11;Sân vườn;Trống",
+                    "B12;Bàn 12;Sân vườn;Trống",
+                    "B13;Bàn 13;Sân vườn;Trống",
+                    "B14;Bàn 14;Sân vườn;Trống",
+                    "B15;Bàn 15;Sân vườn;Trống"
                 });
             }
         }

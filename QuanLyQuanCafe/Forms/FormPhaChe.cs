@@ -232,13 +232,13 @@ namespace QuanLyQuanCafe.Forms
 
             var rnd = new Random();
             var monChon = dsMonConBan[rnd.Next(dsMonConBan.Count)];
-            string[] banList = { "Bàn 1", "Bàn 2", "Bàn 3", "Bàn 4", "Bàn 5", "Bàn VIP 1", "Sân Vườn 2" };
+            int banNum = rnd.Next(1, 16);
+            string tenBan = $"Bàn {banNum}";
+            string maBan = $"B{banNum:D2}";
             string[] sizes = { "S", "M", "L" };
             string[] ghiChuList = { "Ít đường, nhiều đá", "Không đường, nóng", "Nhiều sữa đặc", "Để riêng đá", "Giao gấp mang về", "" };
 
             string maOrder = $"ORD{DateTime.Now:fff}{rnd.Next(10, 99)}";
-            string tenBan = banList[rnd.Next(banList.Length)];
-            string maBan = "B" + rnd.Next(1, 10).ToString("D2");
             string size = sizes[rnd.Next(sizes.Length)];
             int soLuong = rnd.Next(1, 3);
             string ghiChu = ghiChuList[rnd.Next(ghiChuList.Length)];
