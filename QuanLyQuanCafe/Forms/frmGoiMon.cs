@@ -131,17 +131,20 @@ namespace QuanLyQuanCafe.Forms
                 picMon.Image = null;
             }
 
-            // Cap nhat nhan size
-            rdoSizeS.Text = mon.GiaS > 0 ? $"Size S ({mon.GiaS:N0} đ)" : "Size S";
-            rdoSizeM.Text = mon.GiaM > 0 ? $"Size M ({mon.GiaM:N0} đ)" : "Size M";
-            rdoSizeL.Text = mon.GiaL > 0 ? $"Size L ({mon.GiaL:N0} đ)" : "Size L";
+            // Cap nhat nhan size theo chieu doc ro rang, khong de bi che khuat
+            rdoSizeS.Text = $"Size S ({mon.GiaS:N0} đ)";
+            rdoSizeM.Text = $"Size M ({mon.GiaM:N0} đ)";
+            rdoSizeL.Text = $"Size L ({mon.GiaL:N0} đ)";
 
             TinhTienHienThi();
         }
 
         private void rdoSize_CheckedChanged(object? sender, EventArgs e)
         {
-            TinhTienHienThi();
+            if (sender is RadioButton rdo && rdo.Checked)
+            {
+                TinhTienHienThi();
+            }
         }
 
         private void nudSoLuong_ValueChanged(object? sender, EventArgs e)
@@ -153,7 +156,10 @@ namespace QuanLyQuanCafe.Forms
         {
             if (cboMon.SelectedItem is not Mon mon) return;
 
-            string size = rdoSizeS.Checked ? "S" : (rdoSizeL.Checked ? "L" : "M");
+            string size = "M";
+            if (rdoSizeS.Checked) size = "S";
+            else if (rdoSizeL.Checked) size = "L";
+
             decimal donGia = mon.LayGiaTheoSize(size);
             int soLuong = (int)nudSoLuong.Value;
             decimal thanhTien = soLuong * donGia;

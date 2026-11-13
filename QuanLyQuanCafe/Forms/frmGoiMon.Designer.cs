@@ -44,11 +44,11 @@ namespace QuanLyQuanCafe.Forms
             // 
             this.lblTieuDe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(64)))), ((int)(((byte)(55)))));
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 13.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblTieuDe.ForeColor = System.Drawing.Color.White;
             this.lblTieuDe.Location = new System.Drawing.Point(0, 0);
             this.lblTieuDe.Name = "lblTieuDe";
-            this.lblTieuDe.Size = new System.Drawing.Size(584, 45);
+            this.lblTieuDe.Size = new System.Drawing.Size(624, 48);
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "GỌI MÓN VÀO BÀN";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -67,10 +67,10 @@ namespace QuanLyQuanCafe.Forms
             this.grpThongTin.Controls.Add(this.lblDonGia);
             this.grpThongTin.Controls.Add(this.lblThanhTienText);
             this.grpThongTin.Controls.Add(this.lblThanhTien);
-            this.grpThongTin.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.grpThongTin.Location = new System.Drawing.Point(16, 55);
+            this.grpThongTin.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.grpThongTin.Location = new System.Drawing.Point(16, 56);
             this.grpThongTin.Name = "grpThongTin";
-            this.grpThongTin.Size = new System.Drawing.Size(550, 310);
+            this.grpThongTin.Size = new System.Drawing.Size(592, 360);
             this.grpThongTin.TabIndex = 1;
             this.grpThongTin.TabStop = false;
             this.grpThongTin.Text = "Thông tin món gọi";
@@ -78,48 +78,50 @@ namespace QuanLyQuanCafe.Forms
             // lblDanhMuc
             // 
             this.lblDanhMuc.AutoSize = true;
-            this.lblDanhMuc.Location = new System.Drawing.Point(20, 30);
+            this.lblDanhMuc.Location = new System.Drawing.Point(20, 32);
             this.lblDanhMuc.Name = "lblDanhMuc";
-            this.lblDanhMuc.Size = new System.Drawing.Size(75, 19);
+            this.lblDanhMuc.Size = new System.Drawing.Size(69, 17);
             this.lblDanhMuc.TabIndex = 0;
             this.lblDanhMuc.Text = "Danh mục:";
             // 
             // cboDanhMuc
             // 
             this.cboDanhMuc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboDanhMuc.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cboDanhMuc.FormattingEnabled = true;
-            this.cboDanhMuc.Location = new System.Drawing.Point(115, 27);
+            this.cboDanhMuc.Location = new System.Drawing.Point(105, 28);
             this.cboDanhMuc.Name = "cboDanhMuc";
-            this.cboDanhMuc.Size = new System.Drawing.Size(250, 25);
+            this.cboDanhMuc.Size = new System.Drawing.Size(265, 25);
             this.cboDanhMuc.TabIndex = 1;
             this.cboDanhMuc.SelectedIndexChanged += new System.EventHandler(this.cboDanhMuc_SelectedIndexChanged);
             // 
             // lblMon
             // 
             this.lblMon.AutoSize = true;
-            this.lblMon.Location = new System.Drawing.Point(20, 70);
+            this.lblMon.Location = new System.Drawing.Point(20, 72);
             this.lblMon.Name = "lblMon";
-            this.lblMon.Size = new System.Drawing.Size(75, 19);
+            this.lblMon.Size = new System.Drawing.Size(72, 17);
             this.lblMon.TabIndex = 2;
             this.lblMon.Text = "Chọn món:";
             // 
             // cboMon
             // 
             this.cboMon.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMon.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cboMon.FormattingEnabled = true;
-            this.cboMon.Location = new System.Drawing.Point(115, 67);
+            this.cboMon.Location = new System.Drawing.Point(105, 68);
             this.cboMon.Name = "cboMon";
-            this.cboMon.Size = new System.Drawing.Size(250, 25);
+            this.cboMon.Size = new System.Drawing.Size(265, 25);
             this.cboMon.TabIndex = 3;
             this.cboMon.SelectedIndexChanged += new System.EventHandler(this.cboMon_SelectedIndexChanged);
             // 
             // picMon
             // 
-            this.picMon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(240)))), ((int)(((byte)(235)))));
+            this.picMon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
             this.picMon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picMon.Location = new System.Drawing.Point(385, 25);
+            this.picMon.Location = new System.Drawing.Point(390, 24);
             this.picMon.Name = "picMon";
-            this.picMon.Size = new System.Drawing.Size(145, 145);
+            this.picMon.Size = new System.Drawing.Size(185, 185);
             this.picMon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picMon.TabIndex = 4;
             this.picMon.TabStop = false;
@@ -129,19 +131,23 @@ namespace QuanLyQuanCafe.Forms
             this.grpSize.Controls.Add(this.rdoSizeS);
             this.grpSize.Controls.Add(this.rdoSizeM);
             this.grpSize.Controls.Add(this.rdoSizeL);
-            this.grpSize.Location = new System.Drawing.Point(20, 110);
+            this.grpSize.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.grpSize.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(64)))), ((int)(((byte)(55)))));
+            this.grpSize.Location = new System.Drawing.Point(20, 108);
             this.grpSize.Name = "grpSize";
-            this.grpSize.Size = new System.Drawing.Size(345, 65);
+            this.grpSize.Size = new System.Drawing.Size(350, 122);
             this.grpSize.TabIndex = 5;
             this.grpSize.TabStop = false;
             this.grpSize.Text = "Chọn Size";
             // 
             // rdoSizeS
             // 
-            this.rdoSizeS.AutoSize = true;
-            this.rdoSizeS.Location = new System.Drawing.Point(15, 27);
+            this.rdoSizeS.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.rdoSizeS.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.rdoSizeS.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.rdoSizeS.Location = new System.Drawing.Point(20, 24);
             this.rdoSizeS.Name = "rdoSizeS";
-            this.rdoSizeS.Size = new System.Drawing.Size(63, 23);
+            this.rdoSizeS.Size = new System.Drawing.Size(310, 26);
             this.rdoSizeS.TabIndex = 0;
             this.rdoSizeS.Text = "Size S";
             this.rdoSizeS.UseVisualStyleBackColor = true;
@@ -149,23 +155,27 @@ namespace QuanLyQuanCafe.Forms
             // 
             // rdoSizeM
             // 
-            this.rdoSizeM.AutoSize = true;
             this.rdoSizeM.Checked = true;
-            this.rdoSizeM.Location = new System.Drawing.Point(125, 27);
+            this.rdoSizeM.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.rdoSizeM.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.rdoSizeM.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.rdoSizeM.Location = new System.Drawing.Point(20, 54);
             this.rdoSizeM.Name = "rdoSizeM";
-            this.rdoSizeM.Size = new System.Drawing.Size(69, 23);
+            this.rdoSizeM.Size = new System.Drawing.Size(310, 26);
             this.rdoSizeM.TabIndex = 1;
             this.rdoSizeM.TabStop = true;
-            this.rdoSizeM.Text = "Size M";
+            this.rdoSizeM.Text = "Size M (Mặc định)";
             this.rdoSizeM.UseVisualStyleBackColor = true;
             this.rdoSizeM.CheckedChanged += new System.EventHandler(this.rdoSize_CheckedChanged);
             // 
             // rdoSizeL
             // 
-            this.rdoSizeL.AutoSize = true;
-            this.rdoSizeL.Location = new System.Drawing.Point(240, 27);
+            this.rdoSizeL.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.rdoSizeL.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.rdoSizeL.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.rdoSizeL.Location = new System.Drawing.Point(20, 84);
             this.rdoSizeL.Name = "rdoSizeL";
-            this.rdoSizeL.Size = new System.Drawing.Size(63, 23);
+            this.rdoSizeL.Size = new System.Drawing.Size(310, 26);
             this.rdoSizeL.TabIndex = 2;
             this.rdoSizeL.Text = "Size L";
             this.rdoSizeL.UseVisualStyleBackColor = true;
@@ -174,19 +184,19 @@ namespace QuanLyQuanCafe.Forms
             // lblSoLuong
             // 
             this.lblSoLuong.AutoSize = true;
-            this.lblSoLuong.Location = new System.Drawing.Point(20, 195);
+            this.lblSoLuong.Location = new System.Drawing.Point(20, 248);
             this.lblSoLuong.Name = "lblSoLuong";
-            this.lblSoLuong.Size = new System.Drawing.Size(66, 19);
+            this.lblSoLuong.Size = new System.Drawing.Size(64, 17);
             this.lblSoLuong.TabIndex = 6;
             this.lblSoLuong.Text = "Số lượng:";
             // 
             // nudSoLuong
             // 
             this.nudSoLuong.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.nudSoLuong.Location = new System.Drawing.Point(115, 192);
+            this.nudSoLuong.Location = new System.Drawing.Point(105, 244);
             this.nudSoLuong.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             this.nudSoLuong.Name = "nudSoLuong";
-            this.nudSoLuong.Size = new System.Drawing.Size(85, 26);
+            this.nudSoLuong.Size = new System.Drawing.Size(80, 26);
             this.nudSoLuong.TabIndex = 7;
             this.nudSoLuong.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.nudSoLuong.Value = new decimal(new int[] { 1, 0, 0, 0 });
@@ -195,9 +205,9 @@ namespace QuanLyQuanCafe.Forms
             // lblDonGiaText
             // 
             this.lblDonGiaText.AutoSize = true;
-            this.lblDonGiaText.Location = new System.Drawing.Point(230, 195);
+            this.lblDonGiaText.Location = new System.Drawing.Point(220, 248);
             this.lblDonGiaText.Name = "lblDonGiaText";
-            this.lblDonGiaText.Size = new System.Drawing.Size(60, 19);
+            this.lblDonGiaText.Size = new System.Drawing.Size(56, 17);
             this.lblDonGiaText.TabIndex = 8;
             this.lblDonGiaText.Text = "Đơn giá:";
             // 
@@ -205,9 +215,9 @@ namespace QuanLyQuanCafe.Forms
             // 
             this.lblDonGia.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblDonGia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(64)))), ((int)(((byte)(55)))));
-            this.lblDonGia.Location = new System.Drawing.Point(300, 194);
+            this.lblDonGia.Location = new System.Drawing.Point(285, 246);
             this.lblDonGia.Name = "lblDonGia";
-            this.lblDonGia.Size = new System.Drawing.Size(230, 22);
+            this.lblDonGia.Size = new System.Drawing.Size(280, 22);
             this.lblDonGia.TabIndex = 9;
             this.lblDonGia.Text = "0 VNĐ";
             // 
@@ -215,7 +225,7 @@ namespace QuanLyQuanCafe.Forms
             // 
             this.lblThanhTienText.AutoSize = true;
             this.lblThanhTienText.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblThanhTienText.Location = new System.Drawing.Point(20, 250);
+            this.lblThanhTienText.Location = new System.Drawing.Point(20, 305);
             this.lblThanhTienText.Name = "lblThanhTienText";
             this.lblThanhTienText.Size = new System.Drawing.Size(88, 20);
             this.lblThanhTienText.TabIndex = 10;
@@ -225,9 +235,9 @@ namespace QuanLyQuanCafe.Forms
             // 
             this.lblThanhTien.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblThanhTien.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.lblThanhTien.Location = new System.Drawing.Point(120, 245);
+            this.lblThanhTien.Location = new System.Drawing.Point(115, 300);
             this.lblThanhTien.Name = "lblThanhTien";
-            this.lblThanhTien.Size = new System.Drawing.Size(300, 30);
+            this.lblThanhTien.Size = new System.Drawing.Size(450, 32);
             this.lblThanhTien.TabIndex = 11;
             this.lblThanhTien.Text = "0 VNĐ";
             // 
@@ -238,9 +248,9 @@ namespace QuanLyQuanCafe.Forms
             this.btnXacNhan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXacNhan.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnXacNhan.ForeColor = System.Drawing.Color.White;
-            this.btnXacNhan.Location = new System.Drawing.Point(135, 385);
+            this.btnXacNhan.Location = new System.Drawing.Point(155, 430);
             this.btnXacNhan.Name = "btnXacNhan";
-            this.btnXacNhan.Size = new System.Drawing.Size(185, 42);
+            this.btnXacNhan.Size = new System.Drawing.Size(195, 42);
             this.btnXacNhan.TabIndex = 2;
             this.btnXacNhan.Text = "XÁC NHẬN GỌI MÓN";
             this.btnXacNhan.UseVisualStyleBackColor = false;
@@ -254,9 +264,9 @@ namespace QuanLyQuanCafe.Forms
             this.btnHuy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHuy.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnHuy.ForeColor = System.Drawing.Color.White;
-            this.btnHuy.Location = new System.Drawing.Point(340, 385);
+            this.btnHuy.Location = new System.Drawing.Point(370, 430);
             this.btnHuy.Name = "btnHuy";
-            this.btnHuy.Size = new System.Drawing.Size(110, 42);
+            this.btnHuy.Size = new System.Drawing.Size(115, 42);
             this.btnHuy.TabIndex = 3;
             this.btnHuy.Text = "HỦY BỎ";
             this.btnHuy.UseVisualStyleBackColor = false;
@@ -269,7 +279,7 @@ namespace QuanLyQuanCafe.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnHuy;
-            this.ClientSize = new System.Drawing.Size(584, 445);
+            this.ClientSize = new System.Drawing.Size(624, 490);
             this.Controls.Add(this.btnHuy);
             this.Controls.Add(this.btnXacNhan);
             this.Controls.Add(this.grpThongTin);
@@ -285,7 +295,6 @@ namespace QuanLyQuanCafe.Forms
             this.grpThongTin.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picMon)).EndInit();
             this.grpSize.ResumeLayout(false);
-            this.grpSize.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSoLuong)).EndInit();
             this.ResumeLayout(false);
 
